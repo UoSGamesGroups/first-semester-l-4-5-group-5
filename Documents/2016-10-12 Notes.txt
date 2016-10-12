@@ -1,0 +1,52 @@
+Emotions: 
+
+	Monachopsis
+		The subtle but persistent feeling of 
+		being out of place.
+
+	Onism
+		The frustration of being stuck in just one 
+		body that inhabits only one place at a time. 
+
+Target Demographic:
+
+	Gender: both
+	
+	Age: 16 - 30
+	
+	Bartles taxonomy of player types: //Achievers & Explorers
+	
+Genre:
+
+	Puzzle-Strategy (Maybe adventure?)
+	
+Mechanics:
+
+	Moving
+	
+	Taking over bodies //with timer
+	
+	Key/lock
+	
+	Puzzle
+	
+USP:
+	
+	Unravelling narrative over time through gameplay
+	
+	Take control of other characters in the gameworld
+	
+	Different mechanics unlocked upon taking over another character
+	
+Player rewards:
+	
+	Collecting memories
+	
+Slides:
+	Introduction slide
+	Target audience
+	Emotions
+	Genre
+	USP
+	Player rewards
+	Moodboards / art style / screen mockups
