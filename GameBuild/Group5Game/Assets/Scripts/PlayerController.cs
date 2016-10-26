@@ -8,6 +8,11 @@ public class PlayerController : MonoBehaviour
     int takeoverTimer;
     public GameObject controlObject;
 
+    //Guards
+    GameObject[] guards;
+    GameObject guard1;
+    GameObject guard2;
+
     //Input control
     public KeyCode k_moveUp;
     public KeyCode k_moveRight;
@@ -17,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public KeyCode k_swap;
 
     //player variables
-    float movmentSpeed = 2.5f;
+    float movmentSpeed = 5f;
 
     Rigidbody2D rb;
 
@@ -26,12 +31,20 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         controlObject = this.gameObject;
+
+        guard1 = GameObject.Find("level1_guard1");
+        guard2 = GameObject.Find("level1_guard2");
+
+        guards = new GameObject[] { guard1 };
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        if (controlObject != this)
+
         MovementController(controlObject);
+        SwapController();
 	}
 
     void ChangeControlObject(GameObject obj)
@@ -96,12 +109,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void SwapController()
+    {
+        if (Input.GetKeyDown(k_swap))
+        {
+            for (int i = 0; i < guards.Length; i++)
+            {
+                if (Vector2.Distance(guards[i].transform.position, transform.position) <= 2.5f)
+                {
+                    ChangeControlObject(guards[i].gameObject);
+                }
+            }
+        }
+    }
+
     void OnTriggerStay2D(Collider2D colObj)
     {
-        if (Input.GetKey(k_swap))
-        {
-            ChangeControlObject(colObj.gameObject);
-        }
+        //if (Input.GetKey(k_swap))
+        //{
+        //    ChangeControlObject(colObj.gameObject);
+        //}
     }
 
     IEnumerator controlTimer (int controlTime)
