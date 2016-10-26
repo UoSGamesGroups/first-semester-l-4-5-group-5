@@ -36,7 +36,7 @@ public class level1_guard1 : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (pc.controlObject != this)
+        if (pc.controlObject != this.gameObject)
             moveToWaypoints();
 	}
 
@@ -52,12 +52,24 @@ public class level1_guard1 : MonoBehaviour
 
         if (target.name == "firstRoomTopLeft" || target.name == "firstRoomTopRight" || target.name == "firstRoomBottomRight")
         {
-            Debug.Log("guard1 Target touched: " + target.name);
             currPos++;
-            Debug.Log("New guard1 pos: " + currPos);
         }
         else
             currPos = 0;
+
+		//Player
+		//Obtain level1_key1
+		if (pc.controlObject == this.gameObject)
+		{
+			Debug.Log ("colObj: " + target.name);
+
+			if (target.name == "level1_key1")
+			{
+				Destroy (target.gameObject);
+				pc.hasLevel1_key1 = true;
+			}
+		}
+
 
     }
 

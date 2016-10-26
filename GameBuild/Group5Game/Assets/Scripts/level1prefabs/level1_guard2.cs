@@ -36,7 +36,7 @@ public class level1_guard2 : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (pc.controlObject != this)
+        if (pc.controlObject != this.gameObject)
             moveToWaypoints();
     }
 
@@ -52,9 +52,7 @@ public class level1_guard2 : MonoBehaviour
 
         if (target.name == "secondRoomTopLeft" || target.name == "secondRoomTopRight" || target.name == "secondRoomBottomRight")
         {
-            //Debug.Log("guard2 Target touched: " + target.name);
             currPos++;
-            //Debug.Log("New guard2 pos: " + currPos);
         }
         else
             currPos = 0;
