@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class level1_guard1 : MonoBehaviour {
+public class level1_guard1 : MonoBehaviour
+{
 
     GameObject player;
     PlayerController pc;
 
     GameObject[] wayPointsArray;
-    GameObject waypoint1;
-    GameObject waypoint2;
-    GameObject waypoint3;
-    GameObject waypoint4;
+    public GameObject waypoint1;
+	public GameObject waypoint2;
+	public GameObject waypoint3;
+	public GameObject waypoint4;
 
     Rigidbody2D rb;
     float moveSpeed = 2f;
@@ -23,10 +24,10 @@ public class level1_guard1 : MonoBehaviour {
         player = GameObject.Find("player");
         pc = player.GetComponent<PlayerController>();
 
-        waypoint1 = GameObject.Find("firstRoomTopLeft");
+        /*waypoint1 = GameObject.Find("firstRoomTopLeft");
         waypoint2 = GameObject.Find("firstRoomTopRight");
         waypoint3 = GameObject.Find("firstRoomBottomRight");
-        waypoint4 = GameObject.Find("firstRoomBottomLeft");
+        waypoint4 = GameObject.Find("firstRoomBottomLeft");*/
 
         wayPointsArray = new GameObject[] { waypoint1, waypoint2, waypoint3, waypoint4 };
         rb = GetComponent<Rigidbody2D>();
@@ -50,7 +51,11 @@ public class level1_guard1 : MonoBehaviour {
     {
 
         if (target.name == "firstRoomTopLeft" || target.name == "firstRoomTopRight" || target.name == "firstRoomBottomRight")
+        {
+            Debug.Log("guard1 Target touched: " + target.name);
             currPos++;
+            Debug.Log("New guard1 pos: " + currPos);
+        }
         else
             currPos = 0;
 
