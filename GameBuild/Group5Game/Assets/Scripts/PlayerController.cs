@@ -6,16 +6,21 @@ public class PlayerController : MonoBehaviour
 	//Global
 	int level = 1;
 
-	//Level1 Obstacles
-	GameObject level1_door1;
+	//Level1 Objects
+	GameObject level1_door1Object;
+    GameObject level1_door2Object;
+    GameObject level1_door3Object;
+    GameObject level1_lever1Object;
 
 	//Level1 Guards
 	GameObject[] guards;
-	GameObject level1_guard1;
+	GameObject level1_guard1; public int level1_guard1_xScale = 4; public float level1_guard1_yScale = 3.5f;
 	GameObject level1_guard2;
+    GameObject level1_guard3;
 
 	//Game items
 	public bool hasLevel1_key1 = false;
+    public bool hasLevel1_key2 = false;
 
     //Take-over mechanic
     int takeoverTimer;
@@ -34,7 +39,10 @@ public class PlayerController : MonoBehaviour
     //player variables
     float movmentSpeed = 5f;
 
-	//Rigidbody2D
+    int xScale = 3;
+    float yScale = 2.5f;
+
+    //Rigidbody2D
     Rigidbody2D rb;
 
 
@@ -45,12 +53,16 @@ public class PlayerController : MonoBehaviour
 		DontDestroyOnLoad (this);
 
 		//Level1 Obstacles
-		level1_door1 = GameObject.Find ("level1_door1");
+		level1_door1Object = GameObject.Find("level1_door1");
+        level1_door2Object = GameObject.Find("level1_door2");
+        level1_door3Object = GameObject.Find("level1_door3");
+        level1_lever1Object = GameObject.Find("level1_lever1");
 
 		//Level1 Guards
 		level1_guard1 = GameObject.Find("level1_guard1");
 		level1_guard2 = GameObject.Find("level1_guard2");
-		guards = new GameObject[] { level1_guard1, level1_guard2 };
+        level1_guard3 = GameObject.Find("level1_guard3");
+		guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3 };
 
 		//Take-over mechanic
 		takeoverTimer = 5;
@@ -100,6 +112,13 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(k_moveLeft) && Input.GetKey(k_moveUp))
         {
 			rb.velocity = new Vector2(-movmentSpeed, movmentSpeed); // * Time.deltaTime;
+
+            //Player
+            if (controlObject == this.gameObject)
+                controlObject.transform.localScale = new Vector2(-xScale, yScale);
+            //level1guards
+            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+                controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         //Up
         else if (Input.GetKey(k_moveUp) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveLeft)) //if up and not right or left
@@ -110,16 +129,37 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKey(k_moveUp) && Input.GetKey(k_moveRight))
         {
 			rb.velocity = new Vector2(movmentSpeed, movmentSpeed);
+
+            //Player
+            if (controlObject == this.gameObject)
+                controlObject.transform.localScale = new Vector2(xScale, yScale);
+            //level1guards
+            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+                controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Right
         else if (Input.GetKey(k_moveRight) && !Input.GetKey(k_moveUp) && !Input.GetKey(k_moveDown)) //if right and not up or down
         {
 			rb.velocity = new Vector2(movmentSpeed, 0);
+
+            //Player
+            if (controlObject == this.gameObject)
+                controlObject.transform.localScale = new Vector2(xScale, yScale);
+            //level1guards
+            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+                controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Down-Right
         else if (Input.GetKey(k_moveDown) && Input.GetKey(k_moveRight))
         {
 			rb.velocity = new Vector2(movmentSpeed, -movmentSpeed);
+
+            //Player
+            if (controlObject == this.gameObject)
+                controlObject.transform.localScale = new Vector2(xScale, yScale);
+            //level1guards
+            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+                controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Down
         else if (Input.GetKey(k_moveDown) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveLeft)) //if down and not right or left
@@ -130,11 +170,25 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKey(k_moveDown) && Input.GetKey(k_moveLeft))
         {
 			rb.velocity = new Vector2(-movmentSpeed, -movmentSpeed);
+
+            //Player
+            if (controlObject == this.gameObject)
+                controlObject.transform.localScale = new Vector2(-xScale, yScale);
+            //level1guards
+            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+                controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         //Left
         else if (Input.GetKey(k_moveLeft) && !Input.GetKey(k_moveUp) && !Input.GetKey(k_moveDown)) //if left and not up or down
         {
 			rb.velocity = new Vector2(-movmentSpeed, 0);
+
+            //Player
+            if (controlObject == this.gameObject)
+                controlObject.transform.localScale = new Vector2(-xScale, yScale);
+            //level1guards
+            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+                controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         else if (!Input.GetKey(k_moveUp) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveDown) && !Input.GetKey(k_moveLeft))
         {
@@ -156,26 +210,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-	void OnTriggerEnter2D(Collider2D colObj)
-	{	
-		//Obtain level1_key1
-		if (colObj.name == "level1_key1" && controlObject == level1_guard1)
-		{
-			Destroy (colObj); 
-			hasLevel1_key1 = true;
-		}
-	}
-
 	void OperationController()
 	{
 		//Operations
 		if (Input.GetKeyDown (k_operate))
 		{
-			//Open level1_door1
-			if ( Vector2.Distance (controlObject.transform.position, level1_door1.transform.position) <= 2 && hasLevel1_key1 && controlObject == level1_guard1)
-			{
-				Destroy (level1_door1);
-			}
+            //Open level1_door1
+            if (level1_door1Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level1_door1Object.transform.position) <= 3.5 && hasLevel1_key1 && controlObject == level1_guard1)
+                {
+                    Destroy(level1_door1Object);
+                }
+            }
+            //Open level1_door2
+            if (level1_door2Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level1_door2Object.transform.position) < 3.5 && hasLevel1_key2 && controlObject == level1_guard2)
+                {
+                    Destroy(level1_door2Object);
+                }
+            }
+            //Open level1_door3
+            if (level1_door3Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level1_lever1Object.transform.position) < 3 && controlObject == level1_guard3)
+                {
+                    Destroy(level1_door3Object);
+                    level1_lever1Object.transform.localScale = new Vector2(-level1_lever1Object.transform.localScale.x, level1_lever1Object.transform.localScale.y);
+                    Debug.Log("level1_guard3 Unlocking level1_door3 by using level1_lever1");
+                }
+            }
+            //Next object...
 		}
 	}
 

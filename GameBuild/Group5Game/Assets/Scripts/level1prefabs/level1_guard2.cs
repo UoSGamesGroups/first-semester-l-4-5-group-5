@@ -43,8 +43,13 @@ public class level1_guard2 : MonoBehaviour
     void moveToWaypoints()
     {
         Vector2 movePos = new Vector2(wayPointsArray[currPos].transform.position.x - transform.position.x, wayPointsArray[currPos].transform.position.y - transform.position.y);
-
         rb.velocity = movePos.normalized * moveSpeed;
+
+        //Guard facing left or right
+        if (movePos.x < 0)
+            transform.localScale = new Vector2(-pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+        else
+            transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
     }
 
     void OnTriggerEnter2D(Collider2D target)
@@ -56,6 +61,19 @@ public class level1_guard2 : MonoBehaviour
         }
         else
             currPos = 0;
+
+        //Player related
+
+        //Obtain level1_key1
+        if (pc.controlObject == this.gameObject)
+        {
+            if (target.name == "level1_key2")
+            {
+                Destroy(target.gameObject);
+                Debug.Log("level1_guard2 collected level1_key2");
+                pc.hasLevel1_key2 = true;
+            }
+        }
 
     }
 
