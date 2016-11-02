@@ -1,36 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class level1_guard1 : MonoBehaviour
+public class guardController : MonoBehaviour
 {
 
     GameObject player;
     PlayerController pc;
 
-    GameObject[] wayPointsArray;
-    public GameObject waypoint1;
-	public GameObject waypoint2;
-	public GameObject waypoint3;
-	public GameObject waypoint4;
+    public GameObject[] wayPointsArray;
 
     Rigidbody2D rb;
     float moveSpeed = 2f;
 
-    int currPos = 0;
+    private int currPos;
 
     // Use this for initialization
     void Start ()
     {
         player = GameObject.Find("player");
         pc = player.GetComponent<PlayerController>();
+		rb = GetComponent<Rigidbody2D>();
 
-        /*waypoint1 = GameObject.Find("firstRoomTopLeft");
-        waypoint2 = GameObject.Find("firstRoomTopRight");
-        waypoint3 = GameObject.Find("firstRoomBottomRight");
-        waypoint4 = GameObject.Find("firstRoomBottomLeft");*/
-
-        wayPointsArray = new GameObject[] { waypoint1, waypoint2, waypoint3, waypoint4 };
-        rb = GetComponent<Rigidbody2D>();
+		currPos = 0;
 	}
 	
 	// Update is called once per frame
@@ -54,20 +45,21 @@ public class level1_guard1 : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D target)
     {
-
-        if (target.name == "firstRoomTopLeft" || target.name == "firstRoomTopRight" || target.name == "firstRoomBottomRight")
+		//Movement
+		if (target.gameObject == wayPointsArray[0]|| target.gameObject == wayPointsArray[1] || target.gameObject == wayPointsArray[2])
         {
             currPos++;
         }
         else
             currPos = 0;
 
+
 		//Player related
 
 		//Obtain level1_key1
 		if (pc.controlObject == this.gameObject)
 		{
-			if (target.name == "level1_key1")
+			if (this.gameObject.name == "level1_guard1" && target.name == "level1_key1")
 			{
 				Destroy (target.gameObject);
                 Debug.Log("level1_guard1 collected level1_key1");
@@ -75,6 +67,17 @@ public class level1_guard1 : MonoBehaviour
 			}
 		}
 
-    }
+		//Obtain level1_key2
+		if (pc.controlObject == this.gameObject)
+		{
+			if (this.gameObject.name == "level1_guard2" && target.name == "level1_key2")
+			{
+				Destroy(target.gameObject);
+				Debug.Log("level1_guard2 collected level1_key2");
+				pc.hasLevel1_key2 = true;
+			}
+		}
+
+    }//End OnTriggerEnter2D
 
 }

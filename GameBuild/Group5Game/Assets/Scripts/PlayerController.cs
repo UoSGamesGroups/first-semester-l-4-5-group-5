@@ -6,27 +6,42 @@ public class PlayerController : MonoBehaviour
 	//Global
 	int level = 1;
 
-	//Level1 Objects
-	GameObject level1_door1Object;
-    GameObject level1_door2Object;
-    GameObject level1_door3Object;
-    GameObject level1_lever1Object;
+	// ------- //
+	// Level 1 //
+	// ------- //
 
-	//Level1 Guards
+	[Header("Level1 Objects")]
+	public GameObject level1_door1Object;
+	public GameObject level1_door2Object;
+	public GameObject level1_door3Object;
+	public GameObject level1_lever1Object;
+
+	[Header("Level1 Guards")]
+	public GameObject level1_guard1;
+	public GameObject level1_guard2;
+	public GameObject level1_guard3;
+
+
+
+	// ------- //
+	// Level 2 //
+	// ------- //
+
+	[Header("Level2 Objects")]
+	public GameObject level2_door1Object;
+	public GameObject level2_door2Object;
+	public GameObject level2_door3Object;
+	public GameObject level2_door4Object;
+	public GameObject level2_door5Object;
+	public GameObject level2_door6Object;
+
+	// ------- //
+	//  Global //
+	// ------- //
+
 	GameObject[] guards;
-	GameObject level1_guard1; public int level1_guard1_xScale = 4; public float level1_guard1_yScale = 3.5f;
-	GameObject level1_guard2;
-    GameObject level1_guard3;
 
-	//Game items
-	public bool hasLevel1_key1 = false;
-    public bool hasLevel1_key2 = false;
-
-    //Take-over mechanic
-    int takeoverTimer;
-    public GameObject controlObject;
-
-    //Input control
+	[Header("Input control")]
     public KeyCode k_moveUp;
     public KeyCode k_moveRight;
     public KeyCode k_moveDown;
@@ -35,15 +50,24 @@ public class PlayerController : MonoBehaviour
     public KeyCode k_swap;
 	public KeyCode k_operate;
 
-
     //player variables
     float movmentSpeed = 5f;
-
     int xScale = 3;
     float yScale = 2.5f;
 
     //Rigidbody2D
     Rigidbody2D rb;
+
+	[Header("Dont touch these variables")]
+	public int level1_guard1_xScale = 4; public float level1_guard1_yScale = 3.5f;
+
+	//Game bools
+	public bool hasLevel1_key1 = false;
+	public bool hasLevel1_key2 = false;
+
+	//Take-over mechanic
+	int takeoverTimer;
+	public GameObject controlObject;
 
 
 	// Use this for initialization
@@ -52,16 +76,6 @@ public class PlayerController : MonoBehaviour
 		DontDestroyOnLoad (this.gameObject);
 		DontDestroyOnLoad (this);
 
-		//Level1 Obstacles
-		level1_door1Object = GameObject.Find("level1_door1");
-        level1_door2Object = GameObject.Find("level1_door2");
-        level1_door3Object = GameObject.Find("level1_door3");
-        level1_lever1Object = GameObject.Find("level1_lever1");
-
-		//Level1 Guards
-		level1_guard1 = GameObject.Find("level1_guard1");
-		level1_guard2 = GameObject.Find("level1_guard2");
-        level1_guard3 = GameObject.Find("level1_guard3");
 		guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3 };
 
 		//Take-over mechanic
