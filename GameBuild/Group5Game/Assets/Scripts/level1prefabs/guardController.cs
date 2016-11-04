@@ -45,13 +45,44 @@ public class guardController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D target)
     {
+
+		for (int i = 0; i < wayPointsArray.Length; i++)
+		{
+			if (target.gameObject == wayPointsArray[i] && target.gameObject != wayPointsArray[wayPointsArray.Length-1])
+			{
+				currPos++;
+				return;
+			}
+		}
+
+		if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag != "level2Guards")
+		{
+			currPos = 0;
+			return;
+		}
+		else if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag == "level2Guards")
+		{
+			
+			//Swap the array around
+			for (int i = 0; i < wayPointsArray.Length /2; i++)
+			{
+				GameObject temp = wayPointsArray[i];
+				wayPointsArray[i] = wayPointsArray[(wayPointsArray.Length -i) - 1];
+				wayPointsArray[(wayPointsArray.Length -i) - 1] = temp;
+			}
+
+			currPos = 1;
+
+		}
+
+		//Old code 
 		//Movement
-		if (target.gameObject == wayPointsArray[0]|| target.gameObject == wayPointsArray[1] || target.gameObject == wayPointsArray[2])
-        {
-            currPos++;
-        }
-        else
-            currPos = 0;
+		//if (target.gameObject == wayPointsArray[0]|| target.gameObject == wayPointsArray[1] || target.gameObject == wayPointsArray[2])
+        //{
+        //    currPos++;
+        //}
+        //else
+        //    currPos = 0;
 
 
 		//Player related
@@ -64,6 +95,7 @@ public class guardController : MonoBehaviour
 				Destroy (target.gameObject);
                 Debug.Log("level1_guard1 collected level1_key1");
 				pc.hasLevel1_key1 = true;
+				return;
 			}
 		}
 
@@ -75,6 +107,7 @@ public class guardController : MonoBehaviour
 				Destroy(target.gameObject);
 				Debug.Log("level1_guard2 collected level1_key2");
 				pc.hasLevel1_key2 = true;
+				return;
 			}
 		}
 

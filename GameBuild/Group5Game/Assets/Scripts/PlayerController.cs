@@ -4,7 +4,6 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
 	//Global
-	int level = 1;
 
 	// ------- //
 	// Level 1 //
