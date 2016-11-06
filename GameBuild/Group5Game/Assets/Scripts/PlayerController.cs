@@ -10,9 +10,11 @@ public class PlayerController : MonoBehaviour
 	// ------- //
 
 	[Header("Level1 Objects")]
+    //door
 	public GameObject level1_door1Object;
 	public GameObject level1_door2Object;
 	public GameObject level1_door3Object;
+    //lever
 	public GameObject level1_lever1Object;
 
 	[Header("Level1 Guards")]
@@ -20,25 +22,35 @@ public class PlayerController : MonoBehaviour
 	public GameObject level1_guard2;
 	public GameObject level1_guard3;
 
-
-
 	// ------- //
 	// Level 2 //
 	// ------- //
 
 	[Header("Level2 Objects")]
+    //door
 	public GameObject level2_door1Object;
 	public GameObject level2_door2Object;
 	public GameObject level2_door3Object;
 	public GameObject level2_door4Object;
 	public GameObject level2_door5Object;
-	public GameObject level2_door6Object;
+    //lever
+    public GameObject level2_lever1Object;
+    public GameObject level2_lever2Object;
+    public GameObject level2_lever3Object;
+    public GameObject level2_lever4Object;
+    //Spikes
+    public GameObject level2_spikes1Object;
 
-	// ------- //
-	//  Global //
-	// ------- //
+    [Header("Level2 Guards")]
+    public GameObject level2_guard1;
+    public GameObject level2_guard2;
+    public GameObject level2_guard3;
 
-	GameObject[] guards;
+    // ------- //
+    //  Global //
+    // ------- //
+
+    GameObject[] guards;
 
 	[Header("Input control")]
     public KeyCode k_moveUp;
@@ -64,9 +76,17 @@ public class PlayerController : MonoBehaviour
 	public bool hasLevel1_key1 = false;
 	public bool hasLevel1_key2 = false;
 
+    public bool hasLevel2_key1 = false;
+    public bool hasLevel2_key2 = false;
+
 	//Take-over mechanic
 	int takeoverTimer;
 	public GameObject controlObject;
+    GameObject player;
+
+    //Misc
+    float doorDistance = 3.5f;
+    float leverDistance = 2f;
 
 
 	// Use this for initialization
@@ -75,7 +95,7 @@ public class PlayerController : MonoBehaviour
 		DontDestroyOnLoad (this.gameObject);
 		DontDestroyOnLoad (this);
 
-		guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3 };
+		guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3, level2_guard1, level2_guard2, level2_guard3 };
 
 		//Take-over mechanic
 		takeoverTimer = 5;
@@ -83,6 +103,8 @@ public class PlayerController : MonoBehaviour
 		//Misc variables
         rb = GetComponent<Rigidbody2D>();
         controlObject = this.gameObject;
+
+        player = this.gameObject;
 	}
 	
 	// Update is called once per frame
@@ -96,26 +118,42 @@ public class PlayerController : MonoBehaviour
 		OperationController();
 	}
 
-    void ChangeControlObject(GameObject obj)
+    void TakeOverGuard(GameObject obj)
     {
+        //Stop moving
         GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-		controlObject.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
-        rb.velocity = new Vector2(0, 0);
+        controlObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+
+        //Set control object
         controlObject = obj;
+
+        //Set new rb
         rb = obj.GetComponent<Rigidbody2D>();
+
+        //Stop moving
         rb.velocity = new Vector2(0, 0);
+
+        //If taking over guard, start coroutine
         if (obj != this.gameObject)
         {
             StartCoroutine(controlTimer(takeoverTimer));
         }
+    }
 
-		/*
-		 * Note from Jodey Gee:
-		 * 
-		 * Upon exiting from the guard, have the players position set to the 
-		 * guards position, this will be the MC 'exiting' the guards body. 
-		 * 
-		 */
+    void ReturnToPlayer()
+    {
+        //Stop moving
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        controlObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+
+        //Call guard method
+        controlObject.GetComponent<guardController>().returnToClosestWaypoint();
+
+        //Set control object
+        controlObject = player;
+
+        //Set new rb
+        rb = player.GetComponent<Rigidbody2D>();
     }
 
     void MovementController(GameObject obj)
@@ -130,7 +168,7 @@ public class PlayerController : MonoBehaviour
             if (controlObject == this.gameObject)
                 controlObject.transform.localScale = new Vector2(-xScale, yScale);
             //level1guards
-            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+            else
                 controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         //Up
@@ -147,7 +185,7 @@ public class PlayerController : MonoBehaviour
             if (controlObject == this.gameObject)
                 controlObject.transform.localScale = new Vector2(xScale, yScale);
             //level1guards
-            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+            else
                 controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Right
@@ -159,7 +197,7 @@ public class PlayerController : MonoBehaviour
             if (controlObject == this.gameObject)
                 controlObject.transform.localScale = new Vector2(xScale, yScale);
             //level1guards
-            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+            else
                 controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Down-Right
@@ -171,7 +209,7 @@ public class PlayerController : MonoBehaviour
             if (controlObject == this.gameObject)
                 controlObject.transform.localScale = new Vector2(xScale, yScale);
             //level1guards
-            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+            else
                 controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Down
@@ -188,7 +226,7 @@ public class PlayerController : MonoBehaviour
             if (controlObject == this.gameObject)
                 controlObject.transform.localScale = new Vector2(-xScale, yScale);
             //level1guards
-            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+            else
                 controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         //Left
@@ -200,7 +238,7 @@ public class PlayerController : MonoBehaviour
             if (controlObject == this.gameObject)
                 controlObject.transform.localScale = new Vector2(-xScale, yScale);
             //level1guards
-            else if (controlObject == level1_guard1.gameObject || controlObject == level1_guard2.gameObject || controlObject == level1_guard3.gameObject)
+            else
                 controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         else if (!Input.GetKey(k_moveUp) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveDown) && !Input.GetKey(k_moveLeft))
@@ -217,7 +255,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (Vector2.Distance(guards[i].transform.position, transform.position) <= 2.5f)
                 {
-                    ChangeControlObject(guards[i].gameObject);
+                    TakeOverGuard(guards[i].gameObject);
                 }
             }
         }
@@ -231,27 +269,89 @@ public class PlayerController : MonoBehaviour
             //Open level1_door1
             if (level1_door1Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level1_door1Object.transform.position) <= 3.5 && hasLevel1_key1 && controlObject == level1_guard1)
+                if (Vector2.Distance(controlObject.transform.position, level1_door1Object.transform.position) <= doorDistance && hasLevel1_key1 && controlObject == level1_guard1)
                 {
                     Destroy(level1_door1Object);
+                    return;
                 }
             }
             //Open level1_door2
             if (level1_door2Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level1_door2Object.transform.position) < 3.5 && hasLevel1_key2 && controlObject == level1_guard2)
+                if (Vector2.Distance(controlObject.transform.position, level1_door2Object.transform.position) < doorDistance && hasLevel1_key2 && controlObject == level1_guard2)
                 {
                     Destroy(level1_door2Object);
+                    return;
                 }
             }
-            //Open level1_door3
+
+            //Operate level1_lever1
             if (level1_door3Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level1_lever1Object.transform.position) < 3 && controlObject == level1_guard3)
+                if (Vector2.Distance(controlObject.transform.position, level1_lever1Object.transform.position) < leverDistance && controlObject == level1_guard3)
                 {
                     Destroy(level1_door3Object);
                     level1_lever1Object.transform.localScale = new Vector2(-level1_lever1Object.transform.localScale.x, level1_lever1Object.transform.localScale.y);
-                    Debug.Log("level1_guard3 Unlocking level1_door3 by using level1_lever1");
+                    return;
+                }
+            }
+
+            //Operate level2_lever1
+            if (level2_door1Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level2_lever1Object.transform.position) < leverDistance && controlObject == level2_guard1)
+                {
+                    Destroy(level2_door1Object);
+                    level2_lever1Object.transform.localScale = new Vector2(-level2_lever1Object.transform.localScale.x, level2_lever1Object.transform.localScale.y);
+                    return;
+                }
+            }
+            //Open level2_door2
+            if (level2_door2Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level2_door2Object.transform.position) < doorDistance && controlObject == level2_guard2 && hasLevel2_key1)
+                {
+                    Destroy(level2_door2Object);
+                    return;
+                }
+            }
+            //Operate level2_lever2
+            if (level2_door3Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level2_lever2Object.transform.position) < leverDistance && controlObject == level2_guard2)
+                {
+                    Destroy(level2_door3Object);
+                    level2_lever2Object.transform.localScale = new Vector2(-level2_lever2Object.transform.localScale.x, level2_lever2Object.transform.localScale.y);
+                    return;
+                }
+            }
+            //Operate level2_lever3
+            if (level2_door4Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level2_lever3Object.transform.position) < leverDistance && controlObject == level2_guard3)
+                {
+                    Destroy(level2_door4Object);
+                    level2_lever3Object.transform.localScale = new Vector2(-level2_lever3Object.transform.localScale.x, level2_lever3Object.transform.localScale.y);
+                    return;
+                }
+            }
+            //Operate level2_lever4
+            if (level2_spikes1Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level2_lever4Object.transform.position) < leverDistance && controlObject == level2_guard2)
+                {
+                    Destroy(level2_spikes1Object);
+                    level2_lever4Object.transform.localScale = new Vector2(-level2_lever4Object.transform.localScale.x, level2_lever4Object.transform.localScale.y);
+                    return;
+                }
+            }
+            //Open level2_door5
+            if (level2_door5Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, level2_door5Object.transform.position) < doorDistance && controlObject == level2_guard3 && hasLevel2_key2)
+                {
+                    Destroy(level2_door5Object);
+                    return;
                 }
             }
             //Next object...
@@ -269,7 +369,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator controlTimer (int controlTime)
     {
         yield return new WaitForSeconds(controlTime);
-        ChangeControlObject(this.gameObject);
+        ReturnToPlayer();
     }
 
 }//end of class
