@@ -2,7 +2,6 @@ C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\Assembly
 C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\Assembly-CSharp.pdb
 C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\Mono.Cecil.dll
 C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\UnityEditor.dll
-C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
 C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\UnityEngine.dll
 C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\UnityEngine.Networking.dll
 C:\_jb\first-semester-l-4-5-group-5\GameBuild\Group5Game\Temp\bin\Debug\UnityEngine.UI.dll

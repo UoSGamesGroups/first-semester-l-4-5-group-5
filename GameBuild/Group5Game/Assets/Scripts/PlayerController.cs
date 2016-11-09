@@ -3,7 +3,10 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-	//Global
+    //Global
+
+    public Sprite leverUp;
+    public Sprite leverPulled;
 
 	// ------- //
 	// Level 1 //
@@ -65,6 +68,7 @@ public class PlayerController : MonoBehaviour
     float movmentSpeed = 5f;
     int xScale = 3;
     float yScale = 2.5f;
+    int charges = 4;
 
     //Rigidbody2D
     Rigidbody2D rb;
@@ -80,13 +84,17 @@ public class PlayerController : MonoBehaviour
     public bool hasLevel2_key2 = false;
 
 	//Take-over mechanic
-	int takeoverTimer;
+	float takeoverTimer;
 	public GameObject controlObject;
     GameObject player;
 
     //Misc
     float doorDistance = 3.5f;
     float leverDistance = 2f;
+
+    //Canvas
+    public GameObject canvas;
+    CanvasController cc;
 
 
 	// Use this for initialization
@@ -105,6 +113,8 @@ public class PlayerController : MonoBehaviour
         controlObject = this.gameObject;
 
         player = this.gameObject;
+
+        cc = canvas.GetComponent<CanvasController>();
 	}
 	
 	// Update is called once per frame
@@ -255,7 +265,13 @@ public class PlayerController : MonoBehaviour
             {
                 if (Vector2.Distance(guards[i].transform.position, transform.position) <= 2.5f)
                 {
-                    TakeOverGuard(guards[i].gameObject);
+                    if (charges > 0)
+                    {
+                        charges--;
+                        cc.updateCharges();
+                        TakeOverGuard(guards[i].gameObject);
+                    }
+                    
                 }
             }
         }
@@ -291,7 +307,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level1_lever1Object.transform.position) < leverDistance && controlObject == level1_guard3)
                 {
                     Destroy(level1_door3Object);
-                    level1_lever1Object.transform.localScale = new Vector2(-level1_lever1Object.transform.localScale.x, level1_lever1Object.transform.localScale.y);
+                    level1_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
                     return;
                 }
             }
@@ -302,7 +318,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level2_lever1Object.transform.position) < leverDistance && controlObject == level2_guard1)
                 {
                     Destroy(level2_door1Object);
-                    level2_lever1Object.transform.localScale = new Vector2(-level2_lever1Object.transform.localScale.x, level2_lever1Object.transform.localScale.y);
+                    level2_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
                     return;
                 }
             }
@@ -321,7 +337,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level2_lever2Object.transform.position) < leverDistance && controlObject == level2_guard2)
                 {
                     Destroy(level2_door3Object);
-                    level2_lever2Object.transform.localScale = new Vector2(-level2_lever2Object.transform.localScale.x, level2_lever2Object.transform.localScale.y);
+                    level2_lever2Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
                     return;
                 }
             }
@@ -331,7 +347,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level2_lever3Object.transform.position) < leverDistance && controlObject == level2_guard3)
                 {
                     Destroy(level2_door4Object);
-                    level2_lever3Object.transform.localScale = new Vector2(-level2_lever3Object.transform.localScale.x, level2_lever3Object.transform.localScale.y);
+                    level2_lever3Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
                     return;
                 }
             }
@@ -341,7 +357,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level2_lever4Object.transform.position) < leverDistance && controlObject == level2_guard2)
                 {
                     Destroy(level2_spikes1Object);
-                    level2_lever4Object.transform.localScale = new Vector2(-level2_lever4Object.transform.localScale.x, level2_lever4Object.transform.localScale.y);
+                    level2_lever4Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
                     return;
                 }
             }
@@ -358,18 +374,45 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	void OnTriggerStay2D(Collider2D colObj)
-	{
-		//if (colObj.gameObject.name == "level1Guard" && Input.GetKey(k_swap))
-		//{
-		//    ChangeControlObject(colObj.gameObject);
-		//}
-	}
 
-    IEnumerator controlTimer (int controlTime)
+    IEnumerator controlTimer (float controlTime)
     {
-        yield return new WaitForSeconds(controlTime);
+        cc.timerScrollSize = getTakeoverTimer();
+
+        float temp = controlTime;
+
+        temp *= 10;
+
+        for (int i = 0; i < temp; i++)
+        {
+            cc.timerScrollSize -= 0.1f;
+            cc.updateTakeoverBar();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        cc.timerScrollSize = takeoverTimer;
+        cc.updateTakeoverBar();
         ReturnToPlayer();
     }
+
+    void OnTriggerEnter2D(Collider2D target)
+    {
+        if (charges < 4 && target.gameObject.tag == "chargePickup")
+        {
+            Destroy(target.gameObject);
+            charges++;
+            cc.updateCharges();
+        }
+    }
+
+    public int getCharges()
+    {
+        return charges;
+    }
+    public float getTakeoverTimer()
+    {
+        return takeoverTimer;
+    }
+
 
 }//end of class
