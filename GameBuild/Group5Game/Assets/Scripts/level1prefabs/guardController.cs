@@ -14,6 +14,14 @@ public class guardController : MonoBehaviour
 
     private int currPos;
 
+
+	string currentRoom;
+	GameObject[] oldArray;
+	int tempPos;
+
+	GameObject camera;
+	LevelController lc;
+
     // Use this for initialization
     void Start ()
     {
@@ -22,13 +30,28 @@ public class guardController : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 
 		currPos = 0;
+		tempPos = 0;
+
+		currentRoom = "normal";
+
+		camera = GameObject.FindGameObjectWithTag("MainCamera");
+		lc = camera.GetComponent<LevelController>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (pc.controlObject != this.gameObject)
-            moveToWaypoints();
+		if (pc.controlObject != this.gameObject)
+		{
+			if (currentRoom == "normal")
+			{
+				moveToWaypoints();
+			}
+			else
+			{
+				exitRoom();
+			}
+		}
 	}
 
     void moveToWaypoints()
@@ -43,34 +66,74 @@ public class guardController : MonoBehaviour
             transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
     }
 
+	void exitRoom()
+	{
+		//code
+		Vector2 movePos = new Vector2(wayPointsArray[tempPos].transform.position.x - transform.position.x, wayPointsArray[currPos].transform.position.y - transform.position.y);
+		rb.velocity = movePos.normalized * moveSpeed;
+
+		//Guard facing left or right
+		if (movePos.x < 0)
+			transform.localScale = new Vector2(-pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+		else
+			transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+	}
+
     void OnTriggerEnter2D(Collider2D target)
     {
 
-		for (int i = 0; i < wayPointsArray.Length; i++)
+		//While normally walking
+		if (currentRoom == "normal")
 		{
-			if (target.gameObject == wayPointsArray[i] && target.gameObject != wayPointsArray[wayPointsArray.Length-1])
+			for (int i = 0; i < wayPointsArray.Length; i++)
 			{
-				currPos++;
+				if (target.gameObject == wayPointsArray[i] && target.gameObject != wayPointsArray[wayPointsArray.Length-1])
+				{
+					currPos++;
+					return;
+				}
+			}
+			//level1Guard reaches end of the array
+			if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag != "level2Guards")
+			{
+				currPos = 0;
 				return;
 			}
-		}
-
-		if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag != "level2Guards")
-		{
-			currPos = 0;
-			return;
-		}
-		else if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag == "level2Guards")
-		{
-			
-			//Swap the array around
-			for (int i = 0; i < wayPointsArray.Length /2; i++)
+			//level 2 gurad reaches end of the array (Reverse the array)
+			else if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag == "level2Guards")
 			{
-				GameObject temp = wayPointsArray[i];
-				wayPointsArray[i] = wayPointsArray[(wayPointsArray.Length -i) - 1];
-				wayPointsArray[(wayPointsArray.Length -i) - 1] = temp;
+
+				//Swap the array around
+				for (int i = 0; i < wayPointsArray.Length /2; i++)
+				{
+					GameObject temp = wayPointsArray[i];
+					wayPointsArray[i] = wayPointsArray[(wayPointsArray.Length -i) - 1];
+					wayPointsArray[(wayPointsArray.Length -i) - 1] = temp;
+				}
+				currPos = 1;
 			}
-			currPos = 1;
+		}
+		//Else if the guard is returning to another room
+		else
+		{
+			//Move to next waypoint
+			for (int i = 0; i < wayPointsArray.Length; i++)
+			{
+				if (target.gameObject == wayPointsArray[i] && target.gameObject != wayPointsArray[wayPointsArray.Length-1])
+				{
+					currPos++;
+					return;
+				}
+			}
+			//If you reach the end of the temporary array
+			if (target.gameObject == wayPointsArray[wayPointsArray.Length -1])
+			{
+				//return to normal
+				wayPointsArray = oldArray;
+				currentRoom = "normal";
+				returnToClosestWaypoint();
+			}
+
 		}
 
 		//Player related
@@ -112,6 +175,96 @@ public class guardController : MonoBehaviour
             //Next object...
         }
 
+
+		//Walking into rooms
+
+		//level1
+		if (target.gameObject.name == "bottomRoomCollider" && this.gameObject.name != "level1_guard1")
+		{
+			currentRoom = "level1bottomRoom";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level1bottomArray;
+			tempPos = 0;
+			return;
+		}
+		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard1")
+		{
+			currentRoom = "level1middleRoom";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level1middleArrayDown;
+			tempPos = 0;
+			return;
+		}
+		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard3")
+		{
+			currentRoom = "level1middleRoom";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level1middleArrayUp;
+			tempPos = 0;
+			return;
+		}
+		if (target.gameObject.name == "thirdRoomCollider" && this.gameObject.name != "level1_guard3")
+		{
+			currentRoom = "level1topRoom";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level1topLeftArray;
+			tempPos = 0;
+			return;
+		}
+
+		switch (target.gameObject.name)
+		{
+		//level2
+		case "level2bottomLeft":
+			currentRoom = "level2bottomLeft";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2bottomLeftArray;
+			tempPos = 0;
+			break;
+		case "level2bottomRight":
+			currentRoom = "level2bottomRight";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2bottomRightArray;
+			tempPos = 0;
+			break;
+		case "level2right":
+			currentRoom = "level2right";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2rightArray;
+			tempPos = 0;
+			break;
+		case "level2topRight":
+			currentRoom = "level2topRight";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2topRightArray;
+			tempPos = 0;
+			break;
+		case "level2top":
+			currentRoom = "level2top";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2topArray;
+			tempPos = 0;
+			break;
+		case "level2topLeft":
+			currentRoom = "level2topLeft";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2topLeftArray;
+			tempPos = 0;
+			break;
+		case "level2left":
+			currentRoom = "level2left";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2leftArray;
+			tempPos = 0;
+			break;
+		case "level2middle":
+			currentRoom = "level2middle";
+			oldArray = wayPointsArray;
+			wayPointsArray = lc.level2middleArray;
+			tempPos = 0;
+			break;
+
+		}
 
 
     }//End OnTriggerEnter2D
