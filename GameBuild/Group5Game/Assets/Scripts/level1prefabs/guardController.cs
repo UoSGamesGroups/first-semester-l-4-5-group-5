@@ -10,7 +10,7 @@ public class guardController : MonoBehaviour
     public GameObject[] wayPointsArray;
 
     Rigidbody2D rb;
-    float moveSpeed = 20f;
+    float moveSpeed = 2f;
 
     private int currPos;
 

@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 	public KeyCode k_operate;
 
     //player variables
-    float movmentSpeed = 15f;
+    float movmentSpeed = 5f;
     int xScale = 3;
     float yScale = 2.5f;
     int charges = 4;
