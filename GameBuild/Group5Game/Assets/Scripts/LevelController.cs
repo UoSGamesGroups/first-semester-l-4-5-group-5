@@ -37,16 +37,4 @@ public class LevelController : MonoBehaviour {
 	//level2middle
 	public GameObject[] level2middleArray;
 
-
-	// Use this for initialization
-	void Start ()
-	{
-
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
 }

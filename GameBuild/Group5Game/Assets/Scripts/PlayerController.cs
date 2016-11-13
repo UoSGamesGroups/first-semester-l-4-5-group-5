@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 	public KeyCode k_operate;
 
     //player variables
-    float movmentSpeed = 5f;
+    float movmentSpeed = 15f;
     int xScale = 3;
     float yScale = 2.5f;
     int charges = 4;
@@ -158,6 +158,13 @@ public class PlayerController : MonoBehaviour
 
         //Call guard method
         controlObject.GetComponent<guardController>().returnToClosestWaypoint();
+
+        //If the guard isn't normally patrolling (So they are in a room)
+        if (controlObject.GetComponent<guardController>().getCurrentRoom() != "normal")
+        {
+            //Set the temPos of the guard to 0.
+            controlObject.GetComponent<guardController>().setTempPos(0);
+        }
 
         //Set control object
         controlObject = player;
