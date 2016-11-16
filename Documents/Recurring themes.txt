@@ -12,4 +12,3 @@ RECURRING THEMES:
 	5) Extra player feedback: Sounds for unlocking doors, charges, etc. 	
 
 	6) Add more charges, currently the margin of error is too large. 
-
