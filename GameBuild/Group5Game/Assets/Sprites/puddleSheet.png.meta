@@ -1,0 +1,111 @@
+fileFormatVersion: 2
+guid: da71f023af53f124e944c0018fa36894
+timeCreated: 1479309487
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: puddleSheet_0
+    21300002: puddleSheet_1
+    21300004: puddleSheet_2
+    21300006: puddleSheet_3
+    21300008: puddleSheet_4
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: puddleSheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 651
+        width: 770
+        height: 405
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: puddleSheet_1
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 730
+        width: 337
+        height: 238
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: puddleSheet_2
+      rect:
+        serializedVersion: 2
+        x: 1328
+        y: 620
+        width: 1055
+        height: 368
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: puddleSheet_3
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 0
+        width: 963
+        height: 536
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: puddleSheet_4
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 44
+        width: 779
+        height: 507
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

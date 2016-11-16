@@ -88,68 +88,70 @@ public class guardController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D target)
     {
+        if (pc.controlObject != this.gameObject)
+        {
+            //The guard is just normally walking
+            if (currentRoom == "normal")
+            {
+                //Move to the next waypoint
+                for (int i = 0; i < wayPointsArray.Length; i++)
+                {
+                    if (target.gameObject == wayPointsArray[i] && target.gameObject != wayPointsArray[wayPointsArray.Length - 1])
+                    {
+                        currPos++;
+                        return;
+                    }
+                }
+                //If level1Guard reaches end of the array
+                if (target.gameObject == wayPointsArray[wayPointsArray.Length - 1] && gameObject.tag != "level2Guards")
+                {
+                    //Loop around again
+                    currPos = 0;
+                    return;
+                }
+                //Else if level2guard reaches end of the array (Reverse the array)
+                else if (target.gameObject == wayPointsArray[wayPointsArray.Length - 1] && gameObject.tag == "level2Guards")
+                {
 
-		//The guard is just normally walking
-		if (currentRoom == "normal")
-		{
-            //Move to the next waypoint
-			for (int i = 0; i < wayPointsArray.Length; i++)
-			{
-				if (target.gameObject == wayPointsArray[i] && target.gameObject != wayPointsArray[wayPointsArray.Length-1])
-				{
-					currPos++;
-					return;
-				}
-			}
-			//If level1Guard reaches end of the array
-			if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag != "level2Guards")
-			{
-                //Loop around again
-				currPos = 0;
-				return;
-			}
-			//Else if level2guard reaches end of the array (Reverse the array)
-			else if (target.gameObject == wayPointsArray[wayPointsArray.Length -1] && gameObject.tag == "level2Guards")
-			{
+                    //Swap the array around
+                    for (int i = 0; i < wayPointsArray.Length / 2; i++)
+                    {
+                        GameObject temp = wayPointsArray[i];
+                        wayPointsArray[i] = wayPointsArray[(wayPointsArray.Length - i) - 1];
+                        wayPointsArray[(wayPointsArray.Length - i) - 1] = temp;
+                    }
+                    currPos = 1;
+                }
+            }
+            ///////////////////////////////
+            //WAYPOINTS FOR EXITING ROOMS//
+            ///////////////////////////////
+            else //(If guard isn't patrolling)
+            {
+                //For all waypoints
+                for (int i = 0; i < tempArray.Length; i++)
+                {
+                    //If you bump into your current target and this isn't the last waypoint
+                    if (target.gameObject == tempArray[i] && target.gameObject != tempArray[tempArray.Length - 1])
+                    {
+                        //Move to the next one
+                        tempPos++;
+                        return;
+                    }
+                }
+                //If you reach the end of the temporary array
+                if (target.gameObject == tempArray[tempArray.Length - 1])
+                {
+                    //return to normal
+                    currentRoom = "normal";
+                    returnToClosestWaypoint();
+                }
 
-				//Swap the array around
-				for (int i = 0; i < wayPointsArray.Length /2; i++)
-				{
-					GameObject temp = wayPointsArray[i];
-					wayPointsArray[i] = wayPointsArray[(wayPointsArray.Length -i) - 1];
-					wayPointsArray[(wayPointsArray.Length -i) - 1] = temp;
-				}
-				currPos = 1;
-			}
-		}
-        ///////////////////////////////
-		//WAYPOINTS FOR EXITING ROOMS//
-        ///////////////////////////////
-		else //(If guard isn't patrolling)
-		{
-			//For all waypoints
-			for (int i = 0; i < tempArray.Length; i++)
-			{
-                //If you bump into your current target and this isn't the last waypoint
-				if (target.gameObject == tempArray[i] && target.gameObject != tempArray[tempArray.Length-1])
-				{
-                    //Move to the next one
-                    tempPos++;
-					return;
-				}
-			}
-			//If you reach the end of the temporary array
-			if (target.gameObject == tempArray[tempArray.Length -1])
-			{
-                //return to normal
-				currentRoom = "normal";
-				returnToClosestWaypoint();
-			}
-
-		}
+            }
+        }
 
         //////////////////
-		//Player related//
+		//Obtaining keys//
         //////////////////
 		if (pc.controlObject == this.gameObject)
 		{
@@ -189,13 +191,14 @@ public class guardController : MonoBehaviour
             //Next object...
         }
 
+
         /////////////////////
 		//WALKING INTO ROOM//
         /////////////////////
 		//level1
 		if (target.gameObject.name == "bottomRoomCollider" && this.gameObject.name != "level1_guard1")
 		{
-            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
 			currentRoom = "level1bottomRoom";
 			tempArray = lc.level1bottomArray;
 			tempPos = 0;
@@ -203,7 +206,7 @@ public class guardController : MonoBehaviour
 		}
 		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard1")
 		{
-            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1middleRoom";
             tempArray = lc.level1middleArrayDown;
 			tempPos = 0;
@@ -211,7 +214,7 @@ public class guardController : MonoBehaviour
 		}
 		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard3")
 		{
-            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1middleRoom";
             tempArray = lc.level1middleArrayUp;
 			tempPos = 0;
@@ -219,7 +222,7 @@ public class guardController : MonoBehaviour
 		}
 		if (target.gameObject.name == "thirdRoomCollider" && this.gameObject.name != "level1_guard3")
 		{
-            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1topRoom";
             tempArray = lc.level1topLeftArray;
 			tempPos = 0;
@@ -269,15 +272,68 @@ public class guardController : MonoBehaviour
             tempArray = lc.level2middleArray;
 			tempPos = 0;
             break;
-
 		}
-
-
     }//End OnTriggerEnter2D
+
+    void OnTriggerExit2D(Collider2D target)
+    {
+        if (pc.controlObject == this.gameObject)
+        {
+            if (target.gameObject.name == "bottomRoomCollider")
+            {
+                currentRoom = "normal";
+                return;
+            }
+            if (target.gameObject.name == "secondRoomCollider")
+            {
+                currentRoom = "normal";
+                return;
+            }
+            if (target.gameObject.name == "secondRoomCollider")
+            {
+                currentRoom = "normal";
+                return;
+            }
+            if (target.gameObject.name == "thirdRoomCollider")
+            {
+                currentRoom = "normal";
+                return;
+            }
+
+            switch (target.gameObject.name)
+            {
+                //level2
+                case "level2bottomLeft":
+                    currentRoom = "normal";
+                    break;
+                case "level2bottomRight":
+                    currentRoom = "normal";
+                    break;
+                case "level2right":
+                    currentRoom = "normal";
+                    break;
+                case "level2topRight":
+                    currentRoom = "normal";
+                    break;
+                case "level2top":
+                    currentRoom = "normal";
+                    break;
+                case "level2topLeft":
+                    currentRoom = "normal";
+                    break;
+                case "level2left":
+                    currentRoom = "normal";
+                    break;
+                case "level2middle":
+                    currentRoom = "normal";
+                    break;
+            }
+        }
+    }
 
     public void returnToClosestWaypoint()
     {
-        //Debug.Log("returnToClosestWaypoint: " + this.gameObject.name);
+        Debug.Log("returnToClosestWaypoint: " + this.gameObject.name);
         float shortestDist = Vector2.Distance(this.gameObject.transform.position, wayPointsArray[0].gameObject.transform.position);
         currPos = 0;
         //Debug.Log(wayPointsArray[0].gameObject.name + ": " + shortestDist);

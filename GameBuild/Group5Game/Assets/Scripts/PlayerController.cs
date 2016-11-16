@@ -73,6 +73,11 @@ public class PlayerController : MonoBehaviour
     //Rigidbody2D
     Rigidbody2D rb;
 
+    [Header("Misc")]
+    //Sprites
+    public Sprite playerSprite;
+    public Sprite emptySprite;
+
 	[Header("Dont touch these variables")]
 	public int level1_guard1_xScale = 4; public float level1_guard1_yScale = 3.5f;
 
@@ -137,6 +142,9 @@ public class PlayerController : MonoBehaviour
         //Set control object
         controlObject = obj;
 
+        //Make the player invisible
+        player.GetComponent<SpriteRenderer>().sprite = emptySprite;
+
         //Set new rb
         rb = obj.GetComponent<Rigidbody2D>();
 
@@ -165,6 +173,12 @@ public class PlayerController : MonoBehaviour
             //Set the temPos of the guard to 0.
             controlObject.GetComponent<guardController>().setTempPos(0);
         }
+
+        //Make the player visible again
+        player.GetComponent<SpriteRenderer>().sprite = playerSprite;
+
+        //Move the player to the guard
+        player.transform.position = controlObject.transform.position;
 
         //Set control object
         controlObject = player;
@@ -286,7 +300,7 @@ public class PlayerController : MonoBehaviour
 
 	void OperationController()
 	{
-		//Operations
+		//Guard operations
 		if (Input.GetKeyDown (k_operate))
 		{
             //Open level1_door1
@@ -311,7 +325,7 @@ public class PlayerController : MonoBehaviour
             //Operate level1_lever1
             if (level1_door3Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level1_lever1Object.transform.position) < leverDistance && controlObject == level1_guard3)
+                if (Vector2.Distance(controlObject.transform.position, level1_lever1Object.transform.position) < leverDistance && controlObject != this.gameObject)
                 {
                     Destroy(level1_door3Object);
                     level1_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
@@ -322,7 +336,7 @@ public class PlayerController : MonoBehaviour
             //Operate level2_lever1
             if (level2_door1Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level2_lever1Object.transform.position) < leverDistance && controlObject == level2_guard1)
+                if (Vector2.Distance(controlObject.transform.position, level2_lever1Object.transform.position) < leverDistance && controlObject != this.gameObject)
                 {
                     Destroy(level2_door1Object);
                     level2_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
@@ -341,7 +355,7 @@ public class PlayerController : MonoBehaviour
             //Operate level2_lever2
             if (level2_door3Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level2_lever2Object.transform.position) < leverDistance && controlObject == level2_guard2)
+                if (Vector2.Distance(controlObject.transform.position, level2_lever2Object.transform.position) < leverDistance && controlObject != this.gameObject)
                 {
                     Destroy(level2_door3Object);
                     level2_lever2Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
@@ -351,7 +365,7 @@ public class PlayerController : MonoBehaviour
             //Operate level2_lever3
             if (level2_door4Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level2_lever3Object.transform.position) < leverDistance && controlObject == level2_guard3)
+                if (Vector2.Distance(controlObject.transform.position, level2_lever3Object.transform.position) < leverDistance && controlObject != this.gameObject)
                 {
                     Destroy(level2_door4Object);
                     level2_lever3Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
@@ -361,7 +375,7 @@ public class PlayerController : MonoBehaviour
             //Operate level2_lever4
             if (level2_spikes1Object)
             {
-                if (Vector2.Distance(controlObject.transform.position, level2_lever4Object.transform.position) < leverDistance && controlObject == level2_guard2)
+                if (Vector2.Distance(controlObject.transform.position, level2_lever4Object.transform.position) < leverDistance && controlObject != this.gameObject)
                 {
                     Destroy(level2_spikes1Object);
                     level2_lever4Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
