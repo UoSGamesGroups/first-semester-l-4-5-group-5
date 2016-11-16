@@ -1,0 +1,15 @@
+RECURRING THEMES:
+
+	1) Colour code the keys/guards/doots etc. (Or give some way of showing relationships between them)
+
+	2) Guards can use any lever
+
+	3) Controls: Keep a consistent 'Action' button.
+	   Controls: Give some way of telling the player which button the 'Action' button is. 
+
+	4) Levels became too complex too quickly
+
+	5) Extra player feedback: Sounds for unlocking doors, charges, etc. 	
+
+	6) Add more charges, currently the margin of error is too large. 
+
