@@ -104,6 +104,8 @@ public class PlayerController : MonoBehaviour
     //Canvas
     public GameObject canvas;
     CanvasController cc;
+    public GameObject camera;
+    LevelController lc;
 
 
 	// Use this for initialization
@@ -126,6 +128,7 @@ public class PlayerController : MonoBehaviour
         player = this.gameObject;
 
         cc = canvas.GetComponent<CanvasController>();
+        lc = camera.GetComponent<LevelController>();
 	}
 	
 	// Update is called once per frame
@@ -162,6 +165,8 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(controlTimer(takeoverTimer));
         }
+
+        lc.playSound("enterGuard");
     }
 
     void ReturnToPlayer()
@@ -191,6 +196,8 @@ public class PlayerController : MonoBehaviour
 
         //Set new rb
         rb = player.GetComponent<Rigidbody2D>();
+
+        lc.playSound("exitGuard");
     }
 
     void MovementController(GameObject obj)
@@ -315,6 +322,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level1_door1Object.transform.position) <= doorDistance && hasLevel1_key1 && controlObject == level1_guard1)
                 {
                     Destroy(level1_door1Object);
+                    lc.playSound("keyUnlockDoor");
                     return;
                 }
             }
@@ -324,6 +332,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level1_door2Object.transform.position) < doorDistance && hasLevel1_key2 && controlObject == level1_guard2)
                 {
                     Destroy(level1_door2Object);
+                    lc.playSound("keyUnlockDoor");
                     return;
                 }
             }
@@ -335,6 +344,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Destroy(level1_door3Object);
                     level1_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
                     return;
                 }
             }
@@ -346,6 +356,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Destroy(level2_door1Object);
                     level2_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
                     return;
                 }
             }
@@ -355,6 +366,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level2_door2Object.transform.position) < doorDistance && controlObject == level2_guard2 && hasLevel2_key1)
                 {
                     Destroy(level2_door2Object);
+                    lc.playSound("keyUnlockDoor");
                     return;
                 }
             }
@@ -365,6 +377,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Destroy(level2_door3Object);
                     level2_lever2Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
                     return;
                 }
             }
@@ -375,6 +388,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Destroy(level2_door4Object);
                     level2_lever3Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
                     return;
                 }
             }
@@ -385,6 +399,7 @@ public class PlayerController : MonoBehaviour
                 {
                     Destroy(level2_spikes1Object);
                     level2_lever4Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
                     return;
                 }
             }
@@ -394,6 +409,7 @@ public class PlayerController : MonoBehaviour
                 if (Vector2.Distance(controlObject.transform.position, level2_door5Object.transform.position) < doorDistance && controlObject == level2_guard3 && hasLevel2_key2)
                 {
                     Destroy(level2_door5Object);
+                    lc.playSound("keyUnlockDoor");
                     return;
                 }
             }
@@ -428,6 +444,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(target.gameObject);
             charges++;
+            lc.playSound("chargePickup");
             cc.updateCharges();
             return;
         }
