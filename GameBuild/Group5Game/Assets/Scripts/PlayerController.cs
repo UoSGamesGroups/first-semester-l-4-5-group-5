@@ -70,15 +70,19 @@ public class PlayerController : MonoBehaviour
     float yScale = 2.5f;
     int charges = 4;
 
-    //Rigidbody2D
-    Rigidbody2D rb;
+    [Header("Diary variables")]
+    public bool hasDiary1;
+    public bool hasDiary2;
 
     [Header("Misc")]
     //Sprites
     public Sprite playerSprite;
     public Sprite emptySprite;
 
-	[Header("Dont touch these variables")]
+    //Rigidbody2D
+    Rigidbody2D rb;
+
+    [Header("Dont touch these variables")]
 	public int level1_guard1_xScale = 4; public float level1_guard1_yScale = 3.5f;
 
 	//Game bools
@@ -108,7 +112,9 @@ public class PlayerController : MonoBehaviour
 		DontDestroyOnLoad (this.gameObject);
 		DontDestroyOnLoad (this);
 
-		guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3, level2_guard1, level2_guard2, level2_guard3 };
+        hasDiary1 = false; hasDiary2 = false;
+
+        guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3, level2_guard1, level2_guard2, level2_guard3 };
 
 		//Take-over mechanic
 		takeoverTimer = 5;
@@ -423,6 +429,22 @@ public class PlayerController : MonoBehaviour
             Destroy(target.gameObject);
             charges++;
             cc.updateCharges();
+            return;
+        }
+
+        if (target.gameObject.name == "diary1")
+        {
+            hasDiary1 = true;
+            Destroy(target.gameObject);
+            cc.updateInventory();
+            return;
+        }
+        else if (target.gameObject.name == "diary2")
+        {
+            hasDiary2 = true;
+            Destroy(target.gameObject);
+            cc.updateInventory();
+            return;
         }
     }
 

@@ -25,14 +25,15 @@ public class CanvasController : MonoBehaviour {
     public GameObject diaryBarIcon2;
     public GameObject diaryBarIcon3;
     public GameObject diaryBarIcon4;
-    public GameObject diaryLarge1;
-    public GameObject diaryLarge2;
-    public GameObject diaryLarge3;
-    public GameObject diaryLarge4;
+    public GameObject diaryLarge;
 
     [Header("Sprites")]
     public Sprite activeCharge;
     public Sprite inactiveCharge;
+    public Sprite barBlackIcon;
+    public Sprite barDiaryIcon;
+    public Sprite diaryEntry1;
+    public Sprite diaryEntry2;
 
     [Header("Player")]
     public GameObject player;
@@ -64,6 +65,66 @@ public class CanvasController : MonoBehaviour {
     public void updateTakeoverBar()
     {
         timerScrollBar.size = ( timerScrollSize / pc.getTakeoverTimer() );
+    }
+
+    public void updateInventory()
+    {
+        if (pc.hasDiary1)
+            diaryBarIcon1.GetComponent<Image>().sprite = barDiaryIcon;
+        else
+            diaryBarIcon1.GetComponent<Image>().sprite = barBlackIcon;
+
+        if (pc.hasDiary2)
+            diaryBarIcon2.GetComponent<Image>().sprite = barDiaryIcon;
+        else
+            diaryBarIcon2.GetComponent<Image>().sprite = barBlackIcon;
+    }
+
+    public void displayDiary1()
+    {
+        if (pc.hasDiary1)
+        {
+            diaryLarge.SetActive(true);
+            diaryLarge.GetComponent<Image>().sprite = diaryEntry1;
+        }
+    }
+
+    public void displayDiary2()
+    {
+        if (pc.hasDiary2)
+        {
+            diaryLarge.SetActive(true);
+            diaryLarge.GetComponent<Image>().sprite = diaryEntry2;
+        }
+    }
+    public void hideDiary()
+    {
+        diaryLarge.SetActive(false);
+    }
+
+
+    //I initially tried to use this function to controll the mouse-over for the "inventory bar",
+    //however the event-trigger system only seems to let me call functions that do not take 
+    //in any arguments, and so would not let me call this method. 
+    public void diaryDisplay(bool display, int diary)
+    { 
+        if (display)
+        {
+            if (diary == 1 && pc.hasDiary1)
+            {
+                diaryLarge.SetActive(true);
+                diaryLarge.GetComponent<Image>().sprite = diaryEntry1;
+            }
+            else if (diary == 2 && pc.hasDiary2)
+            {
+                diaryLarge.SetActive(true);
+                diaryLarge.GetComponent<Image>().sprite = diaryEntry2;
+            }
+        }
+        else
+        {
+            diaryLarge.SetActive(false);
+        }
     }
 
 }
