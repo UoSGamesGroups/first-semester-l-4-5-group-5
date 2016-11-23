@@ -61,15 +61,16 @@ public class LevelController : MonoBehaviour {
     public GameObject chargePickup;
     public GameObject enterGuard;
     public GameObject exitGuard;
+    public GameObject diaryPickup;
+    public GameObject keyPickup;
     public GameObject keyUnlockDoor;
     public GameObject leverDoorUnlock;
     public GameObject leverPull;
-    public GameObject song1;
-    public GameObject song2;
+    public GameObject songs;
 
     void Start ()
     {
-        song1.GetComponent<AudioSource>().Play();
+        songs.GetComponent<AudioSource>().Play();
     }
 
     public void playSound(string sound)
@@ -84,6 +85,12 @@ public class LevelController : MonoBehaviour {
                 break;
             case "exitGuard":
                 exitGuard.GetComponent<AudioSource>().Play();
+                break;
+            case "keyPickup":
+                keyPickup.GetComponent<AudioSource>().Play();
+                break;
+            case "diaryPickup":
+                diaryPickup.GetComponent<AudioSource>().Play();
                 break;
             case "keyUnlockDoor":
                 keyUnlockDoor.GetComponent<AudioSource>().Play();

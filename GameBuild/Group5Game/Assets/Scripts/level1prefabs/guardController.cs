@@ -49,7 +49,7 @@ public class guardController : MonoBehaviour
 			}
 			else
 			{
-                Debug.Log(this.gameObject.name + " != normal room");
+                //Debug.Log(this.gameObject.name + " != normal room");
 				exitRoom();
 			}
 		}
@@ -75,9 +75,9 @@ public class guardController : MonoBehaviour
 
         for (int i = 0; i < tempArray.Length; i++)
         {
-            Debug.Log("tempArray " + i + ": " + tempArray[i].gameObject.name);
+            //Debug.Log("tempArray " + i + ": " + tempArray[i].gameObject.name);
         }
-        Debug.Log("tempPos:" + tempPos);
+        //Debug.Log("tempPos:" + tempPos);
         //Debug.Log("Guard: " + this.gameObject.name + " Walking to: " + tempArray[tempPos].gameObject.name);
 
 		//Guard facing left or right
@@ -164,6 +164,7 @@ public class guardController : MonoBehaviour
 			{
 				Destroy (target.gameObject);
                 //Debug.Log("level1_guard1 collected level1_key1");
+                lc.playSound("keyPickup");
 				pc.hasLevel1_key1 = true;
 				return;
 			}
@@ -173,6 +174,7 @@ public class guardController : MonoBehaviour
             {
                 Destroy(target.gameObject);
                 //Debug.Log("level1_guard2 collected level1_key2");
+                lc.playSound("keyPickup");
                 pc.hasLevel1_key2 = true;
                 return;
             }
@@ -183,6 +185,7 @@ public class guardController : MonoBehaviour
             else if (this.gameObject.name == "levelNew_guard1" && target.name == "levelNew_key1")
             {
                 Destroy(target.gameObject);
+                lc.playSound("keyPickup");
                 pc.hasLevelNew_key1 = true;
                 return;
             }
@@ -191,6 +194,7 @@ public class guardController : MonoBehaviour
             else if (this.gameObject.name == "levelNew_guard2" && target.name == "levelNew_key2")
             {
                 Destroy(target.gameObject);
+                lc.playSound("keyPickup");
                 pc.hasLevelNew_key2 = true;
                 return;
             }
@@ -199,6 +203,7 @@ public class guardController : MonoBehaviour
             else if (this.gameObject.name == "levelNew_guard2" && target.name == "levelNew_key3")
             {
                 Destroy(target.gameObject);
+                lc.playSound("keyPickup");
                 pc.hasLevelNew_key3 = true;
                 return;
             }
@@ -209,6 +214,7 @@ public class guardController : MonoBehaviour
             else if (this.gameObject.name == "level2_guard2" && target.name == "level2_key1")
             {
                 Destroy(target.gameObject);
+                lc.playSound("keyPickup");
                 pc.hasLevel2_key1 = true;
                 return;
             }
@@ -217,6 +223,7 @@ public class guardController : MonoBehaviour
             else if (this.gameObject.name == "level2_guard3" && target.name == "level2_key2")
             {
                 Destroy(target.gameObject);
+                lc.playSound("keyPickup");
                 pc.hasLevel2_key2 = true;
                 return;
             }

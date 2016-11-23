@@ -571,6 +571,7 @@ public class PlayerController : MonoBehaviour
         if (target.gameObject.name == "diary1")
         {
             hasDiary1 = true;
+            lc.playSound("diaryPickup");
             Destroy(target.gameObject);
             cc.updateInventory();
             return;
@@ -578,6 +579,7 @@ public class PlayerController : MonoBehaviour
         else if (target.gameObject.name == "diary2")
         {
             hasDiary2 = true;
+            lc.playSound("diaryPickup");
             Destroy(target.gameObject);
             cc.updateInventory();
             return;
