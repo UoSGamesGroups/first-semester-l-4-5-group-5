@@ -11,9 +11,9 @@ public class guardController : MonoBehaviour
 
     Rigidbody2D rb;
     float moveSpeed = 2f;
+    public int takeOverTime;
 
     private int currPos;
-
 
 	string currentRoom;
 	GameObject[] tempArray;
@@ -49,6 +49,7 @@ public class guardController : MonoBehaviour
 			}
 			else
 			{
+                Debug.Log(this.gameObject.name + " != normal room");
 				exitRoom();
 			}
 		}
@@ -123,9 +124,9 @@ public class guardController : MonoBehaviour
                     currPos = 1;
                 }
             }
-            ///////////////////////////////
-            //WAYPOINTS FOR EXITING ROOMS//
-            ///////////////////////////////
+            ///////////////////////////////////
+            ////WAYPOINTS FOR EXITING ROOMS////
+            ///////////////////////////////////
             else //(If guard isn't patrolling)
             {
                 //For all waypoints
@@ -155,6 +156,9 @@ public class guardController : MonoBehaviour
         //////////////////
 		if (pc.controlObject == this.gameObject)
 		{
+
+            ////level1////
+
             //Obtain level1_key1
             if (this.gameObject.name == "level1_guard1" && target.name == "level1_key1")
 			{
@@ -172,6 +176,34 @@ public class guardController : MonoBehaviour
                 pc.hasLevel1_key2 = true;
                 return;
             }
+
+            ////levelnew////
+
+            //Obtain levelNew_key1
+            else if (this.gameObject.name == "levelNew_guard1" && target.name == "levelNew_key1")
+            {
+                Destroy(target.gameObject);
+                pc.hasLevelNew_key1 = true;
+                return;
+            }
+
+            //Obtain levelNew_key2
+            else if (this.gameObject.name == "levelNew_guard2" && target.name == "levelNew_key2")
+            {
+                Destroy(target.gameObject);
+                pc.hasLevelNew_key2 = true;
+                return;
+            }
+
+            //Obtain levelNew_key3
+            else if (this.gameObject.name == "levelNew_guard2" && target.name == "levelNew_key3")
+            {
+                Destroy(target.gameObject);
+                pc.hasLevelNew_key3 = true;
+                return;
+            }
+
+            ////level2////
 
             //Obtain level2_key1
             else if (this.gameObject.name == "level2_guard2" && target.name == "level2_key1")
@@ -198,7 +230,7 @@ public class guardController : MonoBehaviour
 		//level1
 		if (target.gameObject.name == "bottomRoomCollider" && this.gameObject.name != "level1_guard1")
 		{
-            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
 			currentRoom = "level1bottomRoom";
 			tempArray = lc.level1bottomArray;
 			tempPos = 0;
@@ -206,7 +238,7 @@ public class guardController : MonoBehaviour
 		}
 		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard1")
 		{
-            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1middleRoom";
             tempArray = lc.level1middleArrayDown;
 			tempPos = 0;
@@ -214,7 +246,7 @@ public class guardController : MonoBehaviour
 		}
 		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard3")
 		{
-            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1middleRoom";
             tempArray = lc.level1middleArrayUp;
 			tempPos = 0;
@@ -222,113 +254,159 @@ public class guardController : MonoBehaviour
 		}
 		if (target.gameObject.name == "thirdRoomCollider" && this.gameObject.name != "level1_guard3")
 		{
-            //Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
+            Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1topRoom";
             tempArray = lc.level1topLeftArray;
 			tempPos = 0;
 			return;
 		}
 
+
 		switch (target.gameObject.name)
 		{
-		//level2
-		case "level2bottomLeft":
-            currentRoom = "level2bottomLeft";
-            tempArray = lc.level2bottomLeftArray;
-			tempPos = 0;
-            break;
-		case "level2bottomRight":
-			currentRoom = "level2bottomRight";
-            tempArray = lc.level2bottomRightArray;
-			tempPos = 0;
-            break;
-		case "level2right":
-			currentRoom = "level2right";
-            tempArray = lc.level2rightArray;
-			tempPos = 0;
-            break;
-		case "level2topRight":
-			currentRoom = "level2topRight";
-            tempArray = lc.level2topRightArray;
-			tempPos = 0;
-            break;
-		case "level2top":
-			currentRoom = "level2top";
-            tempArray = lc.level2topArray;
-			tempPos = 0;
-            break;
-		case "level2topLeft":
-			currentRoom = "level2topLeft";
-            tempArray = lc.level2topLeftArray;
-			tempPos = 0;
-            break;
-		case "level2left":
-			currentRoom = "level2left";
-            tempArray = lc.level2leftArray;
-			tempPos = 0;
-            break;
-		case "level2middle":
-			currentRoom = "level2middle";
-            tempArray = lc.level2middleArray;
-			tempPos = 0;
-            break;
-		}
+		    //level2
+		    case "level2bottomLeft":
+                currentRoom = "level2bottomLeft";
+                tempArray = lc.level2bottomLeftArray;
+			    tempPos = 0;
+                break;
+		    case "level2bottomRight":
+			    currentRoom = "level2bottomRight";
+                tempArray = lc.level2bottomRightArray;
+			    tempPos = 0;
+                break;
+		    case "level2right":
+			    currentRoom = "level2right";
+                tempArray = lc.level2rightArray;
+			    tempPos = 0;
+                break;
+		    case "level2topRight":
+			    currentRoom = "level2topRight";
+                tempArray = lc.level2topRightArray;
+			    tempPos = 0;
+                break;
+		    case "level2top":
+			    currentRoom = "level2top";
+                tempArray = lc.level2topArray;
+			    tempPos = 0;
+                break;
+		    case "level2topLeft":
+			    currentRoom = "level2topLeft";
+                tempArray = lc.level2topLeftArray;
+			    tempPos = 0;
+                break;
+		    case "level2left":
+			    currentRoom = "level2left";
+                tempArray = lc.level2leftArray;
+			    tempPos = 0;
+                break;
+		    case "level2middle":
+			    currentRoom = "level2middle";
+                tempArray = lc.level2middleArray;
+			    tempPos = 0;
+                break;
+
+            //Level3
+            case "levelNew_leftTop":
+                currentRoom = "levelNewLeftTop";
+                tempArray = lc.levelnewLeftTopArray;
+                tempPos = 0;
+                break;
+            case "levelNew_leftBottom":
+                currentRoom = "levelNewLeftBottom";
+                tempArray = lc.levelnewLeftBottomArray;
+                tempPos = 0;
+                break;
+            case "levelNew_topRight":
+                currentRoom = "levelNewTopRight";
+                tempArray = lc.levelnewTopRightArray;
+                tempPos = 0;
+                break;
+            case "levelNew_topLeft":
+                currentRoom = "levelNewTopLeft";
+                tempArray = lc.levelnewTopLeftArray;
+                tempPos = 0;
+                break;
+            case "levelNew_northRoom":
+                currentRoom = "levelNewNorth";
+                tempArray = lc.levelnewNorthRoomArray;
+                tempPos = 0;
+                break;
+            case "levelNew_southRoom":
+                if (this.gameObject.name == "levelNew_guard2")
+                {
+                    currentRoom = "levelNewSouthRoom";
+                    tempArray = lc.levelnewSouthRoomArray;
+                    tempPos = 0;
+                }
+                break;
+            case "levelNew_mainRoomCollider":
+                if (this.gameObject.name == "levelNew_guard1")
+                {
+                    currentRoom = "levelNewMainRoom";
+                    tempArray = lc.levelnewMainRoomArray;
+                    tempPos = 0;
+                }
+                break;
+            default:
+                break;
+        }
     }//End OnTriggerEnter2D
 
     void OnTriggerExit2D(Collider2D target)
     {
-        if (pc.controlObject == this.gameObject)
-        {
-            if (target.gameObject.name == "bottomRoomCollider")
-            {
-                currentRoom = "normal";
-                return;
-            }
-            if (target.gameObject.name == "secondRoomCollider")
-            {
-                currentRoom = "normal";
-                return;
-            }
-            if (target.gameObject.name == "secondRoomCollider")
-            {
-                currentRoom = "normal";
-                return;
-            }
-            if (target.gameObject.name == "thirdRoomCollider")
-            {
-                currentRoom = "normal";
-                return;
-            }
+        //if (pc.controlObject == this.gameObject)
+        //{
+        //    if (target.gameObject.name == "bottomRoomCollider")
+        //    {
+        //        currentRoom = "normal";
+        //        return;
+        //    }
+        //    if (target.gameObject.name == "secondRoomCollider")
+        //    {
+        //        currentRoom = "normal";
+        //        return;
+        //    }
+        //    if (target.gameObject.name == "secondRoomCollider")
+        //    {
+        //        currentRoom = "normal";
+        //        return;
+        //    }
+        //    if (target.gameObject.name == "thirdRoomCollider")
+        //    {
+        //        currentRoom = "normal";
+        //        return;
+        //    }
 
-            switch (target.gameObject.name)
-            {
-                //level2
-                case "level2bottomLeft":
-                    currentRoom = "normal";
-                    break;
-                case "level2bottomRight":
-                    currentRoom = "normal";
-                    break;
-                case "level2right":
-                    currentRoom = "normal";
-                    break;
-                case "level2topRight":
-                    currentRoom = "normal";
-                    break;
-                case "level2top":
-                    currentRoom = "normal";
-                    break;
-                case "level2topLeft":
-                    currentRoom = "normal";
-                    break;
-                case "level2left":
-                    currentRoom = "normal";
-                    break;
-                case "level2middle":
-                    currentRoom = "normal";
-                    break;
-            }
-        }
+        //    switch (target.gameObject.name)
+        //    {
+        //        //level2
+        //        case "level2bottomLeft":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2bottomRight":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2right":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2topRight":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2top":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2topLeft":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2left":
+        //            currentRoom = "normal";
+        //            break;
+        //        case "level2middle":
+        //            currentRoom = "normal";
+        //            break;
+        //    }
+        //}
     }
 
     public void returnToClosestWaypoint()

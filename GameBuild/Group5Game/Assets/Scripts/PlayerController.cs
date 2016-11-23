@@ -25,11 +25,33 @@ public class PlayerController : MonoBehaviour
 	public GameObject level1_guard2;
 	public GameObject level1_guard3;
 
-	// ------- //
-	// Level 2 //
-	// ------- //
+    // -------- //
+    // Levelnew //
+    // -------- //
 
-	[Header("Level2 Objects")]
+    [Header("LevelNew Objects")]
+    //door
+    public GameObject levelNew_door1Object;
+    public GameObject levelNew_door2Object;
+    public GameObject levelNew_door3Object;
+    public GameObject levelNew_door4Object;
+    public GameObject levelNew_door5Object;
+    public GameObject levelNew_door6Object;
+    //lever
+    public GameObject levelNew_lever1Object;
+    public GameObject levelNew_lever2Object;
+    public GameObject levelNew_lever3Object;
+
+    [Header("levelNew Guards")]
+    public GameObject levelNew_guard1;
+    public GameObject levelNew_guard2;
+
+
+    // ------- //
+    // Level 2 //
+    // ------- //
+
+    [Header("Level2 Objects")]
     //door
 	public GameObject level2_door1Object;
 	public GameObject level2_door2Object;
@@ -61,6 +83,11 @@ public class PlayerController : MonoBehaviour
     public KeyCode k_moveDown;
     public KeyCode k_moveLeft;
 
+    public KeyCode K_arrowUp;
+    public KeyCode k_arrowRight;
+    public KeyCode k_arrowDown;
+    public KeyCode k_arrowLeft;
+
     public KeyCode k_swap;
 	public KeyCode k_operate;
 
@@ -89,6 +116,10 @@ public class PlayerController : MonoBehaviour
 	public bool hasLevel1_key1 = false;
 	public bool hasLevel1_key2 = false;
 
+    public bool hasLevelNew_key1 = false;
+    public bool hasLevelNew_key2 = false;
+    public bool hasLevelNew_key3 = false;
+
     public bool hasLevel2_key1 = false;
     public bool hasLevel2_key2 = false;
 
@@ -116,7 +147,9 @@ public class PlayerController : MonoBehaviour
 
         hasDiary1 = false; hasDiary2 = false;
 
-        guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3, level2_guard1, level2_guard2, level2_guard3 };
+        guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3,
+                                    levelNew_guard1, levelNew_guard2,
+                                    level2_guard1, level2_guard2, level2_guard3 };
 
 		//Take-over mechanic
 		takeoverTimer = 5;
@@ -160,10 +193,14 @@ public class PlayerController : MonoBehaviour
         //Stop moving
         rb.velocity = new Vector2(0, 0);
 
+        //Quickly reference the obj script
+        guardController gc = obj.GetComponent<guardController>();
+
         //If taking over guard, start coroutine
         if (obj != this.gameObject)
         {
-            StartCoroutine(controlTimer(takeoverTimer));
+            takeoverTimer = gc.takeOverTime;
+            StartCoroutine(controlTimer(gc.takeOverTime));
         }
 
         lc.playSound("enterGuard");
@@ -184,7 +221,7 @@ public class PlayerController : MonoBehaviour
             //Set the temPos of the guard to 0.
             controlObject.GetComponent<guardController>().setTempPos(0);
         }
-
+       
         //Make the player visible again
         player.GetComponent<SpriteRenderer>().sprite = playerSprite;
 
@@ -204,7 +241,7 @@ public class PlayerController : MonoBehaviour
     {
 
         // Up - Left
-        if (Input.GetKey(k_moveLeft) && Input.GetKey(k_moveUp))
+        if ((Input.GetKey(k_moveLeft) || Input.GetKey (k_arrowLeft)) && (Input.GetKey(k_moveUp) || Input.GetKey(K_arrowUp)))
         {
 			rb.velocity = new Vector2(-movmentSpeed, movmentSpeed); // * Time.deltaTime;
 
@@ -216,14 +253,14 @@ public class PlayerController : MonoBehaviour
                 controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         //Up
-        else if (Input.GetKey(k_moveUp) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveLeft)) //if up and not right or left
+        else if ((Input.GetKey(k_moveUp) || Input.GetKey(K_arrowUp)) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_arrowRight)  && !Input.GetKey(k_moveLeft) && !Input.GetKey(k_arrowLeft)) //if up and not right or left
         {
-			rb.velocity = new Vector2(0, movmentSpeed);
+            rb.velocity = new Vector2(0, movmentSpeed);
         }
         //Up-Right
-        else if (Input.GetKey(k_moveUp) && Input.GetKey(k_moveRight))
+        else if ((Input.GetKey(k_moveUp) || Input.GetKey(K_arrowUp)) && (Input.GetKey(k_moveRight) || Input.GetKey(k_arrowRight)))
         {
-			rb.velocity = new Vector2(movmentSpeed, movmentSpeed);
+            rb.velocity = new Vector2(movmentSpeed, movmentSpeed);
 
             //Player
             if (controlObject == this.gameObject)
@@ -233,9 +270,9 @@ public class PlayerController : MonoBehaviour
                 controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Right
-        else if (Input.GetKey(k_moveRight) && !Input.GetKey(k_moveUp) && !Input.GetKey(k_moveDown)) //if right and not up or down
+        else if ((Input.GetKey(k_moveRight) || Input.GetKey(k_arrowRight)) && !Input.GetKey(k_moveUp) && !Input.GetKey(K_arrowUp) && !Input.GetKey(k_moveDown) && !Input.GetKey(k_arrowDown)) //if right and not up or down
         {
-			rb.velocity = new Vector2(movmentSpeed, 0);
+            rb.velocity = new Vector2(movmentSpeed, 0);
 
             //Player
             if (controlObject == this.gameObject)
@@ -245,9 +282,9 @@ public class PlayerController : MonoBehaviour
                 controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Down-Right
-        else if (Input.GetKey(k_moveDown) && Input.GetKey(k_moveRight))
+        else if ((Input.GetKey(k_moveDown) || Input.GetKey(k_arrowDown)) && (Input.GetKey(k_moveRight) || Input.GetKey(k_arrowRight)))
         {
-			rb.velocity = new Vector2(movmentSpeed, -movmentSpeed);
+            rb.velocity = new Vector2(movmentSpeed, -movmentSpeed);
 
             //Player
             if (controlObject == this.gameObject)
@@ -257,14 +294,14 @@ public class PlayerController : MonoBehaviour
                 controlObject.transform.localScale = new Vector2(level1_guard1_xScale, level1_guard1_yScale);
         }
         //Down
-        else if (Input.GetKey(k_moveDown) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveLeft)) //if down and not right or left
+        else if ((Input.GetKey(k_moveDown) || Input.GetKey(k_arrowDown)) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_arrowRight) && !Input.GetKey(k_moveLeft) && !Input.GetKey(k_arrowLeft)) //if down and not right or left
         {
-			rb.velocity = new Vector2(0, -movmentSpeed);
+            rb.velocity = new Vector2(0, -movmentSpeed);
         }
         //Down-Left
-        else if (Input.GetKey(k_moveDown) && Input.GetKey(k_moveLeft))
+        else if ((Input.GetKey(k_moveDown) || Input.GetKey(k_arrowDown)) && (Input.GetKey(k_moveLeft) || Input.GetKey(k_arrowLeft)))
         {
-			rb.velocity = new Vector2(-movmentSpeed, -movmentSpeed);
+            rb.velocity = new Vector2(-movmentSpeed, -movmentSpeed);
 
             //Player
             if (controlObject == this.gameObject)
@@ -274,9 +311,9 @@ public class PlayerController : MonoBehaviour
                 controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
         //Left
-        else if (Input.GetKey(k_moveLeft) && !Input.GetKey(k_moveUp) && !Input.GetKey(k_moveDown)) //if left and not up or down
+        else if (Input.GetKey(k_moveLeft) || Input.GetKey(k_arrowLeft) && !Input.GetKey(k_moveUp) && !Input.GetKey(K_arrowUp) && !Input.GetKey(k_moveDown) && !Input.GetKey(k_arrowDown)) //if left and not up or down
         {
-			rb.velocity = new Vector2(-movmentSpeed, 0);
+            rb.velocity = new Vector2(-movmentSpeed, 0);
 
             //Player
             if (controlObject == this.gameObject)
@@ -285,7 +322,7 @@ public class PlayerController : MonoBehaviour
             else
                 controlObject.transform.localScale = new Vector2(-level1_guard1_xScale, level1_guard1_yScale);
         }
-        else if (!Input.GetKey(k_moveUp) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveDown) && !Input.GetKey(k_moveLeft))
+        else if (!Input.GetKey(k_moveUp) || !Input.GetKey(k_moveUp) && !Input.GetKey(k_moveRight) && !Input.GetKey(k_moveDown) || !Input.GetKey(k_arrowDown) && !Input.GetKey(k_moveLeft) || !Input.GetKey(k_arrowLeft))
         {
 			rb.velocity = new Vector2(0, 0);
         }
@@ -316,6 +353,11 @@ public class PlayerController : MonoBehaviour
 		//Guard operations
 		if (Input.GetKeyDown (k_operate))
 		{
+
+            ///////////////////////
+            ////////Level 1////////
+            ///////////////////////
+
             //Open level1_door1
             if (level1_door1Object)
             {
@@ -348,6 +390,83 @@ public class PlayerController : MonoBehaviour
                     return;
                 }
             }
+
+            ///////////////////////
+            ///////Level new///////
+            ///////////////////////
+
+            //Open levelNew_door1
+            if (levelNew_door1Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, levelNew_door1Object.transform.position) <= doorDistance && hasLevelNew_key1 && controlObject == levelNew_guard1)
+                {
+                    Destroy(levelNew_door1Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+                }
+            }
+
+            //Operate levelNew_lever1
+            if (levelNew_door4Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, levelNew_lever1Object.transform.position) <= leverDistance && controlObject != this.gameObject)
+                {
+                    Destroy(levelNew_door4Object);
+                    levelNew_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
+                    return;
+                }
+            }
+
+            //Open levelNew_door3
+            if (levelNew_door2Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, levelNew_door2Object.transform.position) <= doorDistance && hasLevelNew_key2 && controlObject == levelNew_guard2)
+                {
+                    Destroy(levelNew_door2Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+                }
+            }
+
+            //Operate levelNew_lever2
+            if (levelNew_door5Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, levelNew_lever2Object.transform.position) <= leverDistance && controlObject != this.gameObject)
+                {
+                    Destroy(levelNew_door5Object);
+                    levelNew_lever2Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
+                    return;
+                }
+            }
+
+            //Operate levelNew_lever3
+            if (levelNew_door3Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, levelNew_lever3Object.transform.position) <= leverDistance && controlObject != this.gameObject)
+                {
+                    Destroy(levelNew_door3Object);
+                    levelNew_lever3Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
+                    return;
+                }
+            }
+
+            //Open levelNew_door6
+            if (levelNew_door6Object)
+            {
+                if (Vector2.Distance(controlObject.transform.position, levelNew_door6Object.transform.position) <= doorDistance && hasLevelNew_key3 && controlObject == levelNew_guard2)
+                {
+                    Destroy(levelNew_door6Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+                }
+            }
+
+            ///////////////////////
+            ////////Level 2////////
+            ///////////////////////
 
             //Operate level2_lever1
             if (level2_door1Object)

@@ -4,6 +4,9 @@ using System.Collections;
 public class LevelController : MonoBehaviour {
 
     [Header("Waypoint Arrays")]
+    //////////////
+    ////level1////
+    //////////////
 	//level1Room1
 	public GameObject[] level1bottomArray;
 
@@ -14,8 +17,23 @@ public class LevelController : MonoBehaviour {
 	//level1Room3
 	public GameObject[] level1topLeftArray;
 
-	//level2bottomLeft
-	public GameObject[] level2bottomLeftArray;
+    ////////////////
+    ////levelnew////
+    ////////////////
+    public GameObject[] levelnewLeftTopArray;
+    public GameObject[] levelnewLeftBottomArray;
+    public GameObject[] levelnewTopRightArray;
+    public GameObject[] levelnewTopLeftArray;
+    public GameObject[] levelnewNorthRoomArray;
+    public GameObject[] levelnewMainRoomArray;
+    public GameObject[] levelnewSouthRoomArray;
+
+
+    //////////////
+    ////level2////
+    //////////////
+    //level2bottomLeft
+    public GameObject[] level2bottomLeftArray;
 
 	//level2bottomRight
 	public GameObject[] level2bottomRightArray;
