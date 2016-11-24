@@ -90,6 +90,7 @@ public class PlayerController : MonoBehaviour
 
     public KeyCode k_swap;
 	public KeyCode k_operate;
+    public KeyCode k_exit;
 
     //player variables
     float movmentSpeed = 5f;
@@ -127,6 +128,7 @@ public class PlayerController : MonoBehaviour
 	float takeoverTimer;
 	public GameObject controlObject;
     GameObject player;
+    Coroutine lastRoutine = null;
 
     //Misc
     float doorDistance = 3.5f;
@@ -186,6 +188,7 @@ public class PlayerController : MonoBehaviour
 
         //Make the player invisible
         player.GetComponent<SpriteRenderer>().sprite = emptySprite;
+        player.transform.position = new Vector2(-50f, -50f);
 
         //Set new rb
         rb = obj.GetComponent<Rigidbody2D>();
@@ -200,7 +203,7 @@ public class PlayerController : MonoBehaviour
         if (obj != this.gameObject)
         {
             takeoverTimer = gc.takeOverTime;
-            StartCoroutine(controlTimer(gc.takeOverTime));
+            lastRoutine = StartCoroutine(controlTimer(gc.takeOverTime));
         }
 
         lc.playSound("enterGuard");
@@ -350,6 +353,14 @@ public class PlayerController : MonoBehaviour
 
 	void OperationController()
 	{
+        //Exit guard early
+        if (Input.GetKey(k_exit) && controlObject != this.gameObject)
+        {
+            StopCoroutine(lastRoutine);
+            takeoverTimer = 0f;
+            ReturnToPlayer();
+        }
+
 		//Guard operations
 		if (Input.GetKeyDown (k_operate))
 		{
