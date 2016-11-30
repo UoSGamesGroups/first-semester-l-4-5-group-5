@@ -15,6 +15,8 @@ public class guardController : MonoBehaviour
 
     private int currPos;
 
+    public GameObject childKeyObj;
+
 	string currentRoom;
 	GameObject[] tempArray;
 	int tempPos;
@@ -86,6 +88,18 @@ public class guardController : MonoBehaviour
 		else
 			transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
 	}
+
+    public void activateChildObject(bool foo)
+    {
+        if (foo)
+        {
+            childKeyObj.SetActive(true);
+        }
+        else if (!foo)
+        {
+            childKeyObj.SetActive(false);
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D target)
     {

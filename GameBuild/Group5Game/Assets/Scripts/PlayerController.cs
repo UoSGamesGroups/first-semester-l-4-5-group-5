@@ -101,6 +101,8 @@ public class PlayerController : MonoBehaviour
     [Header("Diary variables")]
     public bool hasDiary1;
     public bool hasDiary2;
+    public bool hasDiary3;
+    public bool hasDiary4;
 
     [Header("Misc")]
     //Sprites
@@ -175,7 +177,31 @@ public class PlayerController : MonoBehaviour
         MovementController(controlObject);
         SwapController();
 		OperationController();
+        
 	}
+
+    void OnTriggerStay2D(Collider2D target)
+    {
+        if (target.gameObject.name == "bottomRoomCollider")
+        {
+            KeyGuideController();
+        }
+    }
+
+    void KeyGuideController()
+    {
+        if (Vector2.Distance(this.gameObject.transform.position, level1_guard1.gameObject.transform.position) <= 2.5 )
+        {
+            guardController tempgc = level1_guard1.GetComponent<guardController>();
+            tempgc.activateChildObject(true);
+        }
+        else
+        {
+            guardController tempgc = level1_guard1.GetComponent<guardController>();
+            tempgc.activateChildObject(false);
+        }
+    }
+
 
     void TakeOverGuard(GameObject obj)
     {
@@ -195,6 +221,14 @@ public class PlayerController : MonoBehaviour
 
         //Stop moving
         rb.velocity = new Vector2(0, 0);
+
+        //If level1_guard1
+        if (controlObject == level1_guard1)
+        {
+            //Remove the guide from the guard1
+            guardController tempgc = level1_guard1.GetComponent<guardController>();
+            tempgc.activateChildObject(false);
+        }
 
         //Quickly reference the obj script
         guardController gc = obj.GetComponent<guardController>();
@@ -224,7 +258,16 @@ public class PlayerController : MonoBehaviour
             //Set the temPos of the guard to 0.
             controlObject.GetComponent<guardController>().setTempPos(0);
         }
-       
+
+        //If level1_guard1
+        if(controlObject == level1_guard1)
+        {
+            //Remove the guide from the guard1
+            guardController tempgc = level1_guard1.GetComponent<guardController>();
+            tempgc.activateChildObject(false);
+        }
+        
+
         //Make the player visible again
         player.GetComponent<SpriteRenderer>().sprite = playerSprite;
 
@@ -590,6 +633,22 @@ public class PlayerController : MonoBehaviour
         else if (target.gameObject.name == "diary2")
         {
             hasDiary2 = true;
+            lc.playSound("diaryPickup");
+            Destroy(target.gameObject);
+            cc.updateInventory();
+            return;
+        }
+        else if (target.gameObject.name == "diary3")
+        {
+            hasDiary3 = true;
+            lc.playSound("diaryPickup");
+            Destroy(target.gameObject);
+            cc.updateInventory();
+            return;
+        }
+        else if (target.gameObject.name == "diary4")
+        {
+            hasDiary4 = true;
             lc.playSound("diaryPickup");
             Destroy(target.gameObject);
             cc.updateInventory();

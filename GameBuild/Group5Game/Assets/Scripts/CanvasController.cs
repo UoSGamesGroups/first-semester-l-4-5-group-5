@@ -34,6 +34,8 @@ public class CanvasController : MonoBehaviour {
     public Sprite barDiaryIcon;
     public Sprite diaryEntry1;
     public Sprite diaryEntry2;
+    public Sprite diaryEntry3;
+    public Sprite diaryEntry4;
 
     [Header("Player")]
     public GameObject player;
@@ -78,6 +80,16 @@ public class CanvasController : MonoBehaviour {
             diaryBarIcon2.GetComponent<Image>().sprite = barDiaryIcon;
         else
             diaryBarIcon2.GetComponent<Image>().sprite = barBlackIcon;
+
+        if (pc.hasDiary3)
+            diaryBarIcon3.GetComponent<Image>().sprite = barDiaryIcon;
+        else
+            diaryBarIcon3.GetComponent<Image>().sprite = barBlackIcon;
+
+        if (pc.hasDiary4)
+            diaryBarIcon4.GetComponent<Image>().sprite = barDiaryIcon;
+        else
+            diaryBarIcon4.GetComponent<Image>().sprite = barBlackIcon;
     }
 
     public void displayDiary1()
@@ -97,6 +109,25 @@ public class CanvasController : MonoBehaviour {
             diaryLarge.GetComponent<Image>().sprite = diaryEntry2;
         }
     }
+
+    public void displayDiary3()
+    {
+        if (pc.hasDiary3)
+        {
+            diaryLarge.SetActive(true);
+            diaryLarge.GetComponent<Image>().sprite = diaryEntry3;
+        }
+    }
+
+    public void displayDiary4()
+    {
+        if (pc.hasDiary4)
+        {
+            diaryLarge.SetActive(true);
+            diaryLarge.GetComponent<Image>().sprite = diaryEntry4;
+        }
+    }
+
     public void hideDiary()
     {
         diaryLarge.SetActive(false);
