@@ -72,6 +72,36 @@ public class PlayerController : MonoBehaviour
     public GameObject level2_guard3;
 
     // ------- //
+    // Level 3 //
+    // ------- //
+
+    [Header("Level3 Objects")]
+    //door
+    public GameObject level3_door1Object;
+    public GameObject level3_door2Object;
+    public GameObject level3_door3Object;
+    public GameObject level3_door4Object;
+    public GameObject level3_door5Object;
+    public GameObject level3_door6Object;
+    public GameObject level3_door7Object;
+    public GameObject level3_door8Object;
+    public GameObject level3_door9Object;
+    //lever
+    public GameObject level3_lever1Object;
+    public GameObject level3_lever2Object;
+    public GameObject level3_lever3Object;
+
+    [Header("Level3 Guards")]
+    public GameObject level3_guard1;
+    public GameObject level3_guard2;
+    public GameObject level3_guard3;
+    public GameObject level3_guard4;
+    public GameObject level3_guard5;
+    public GameObject level3_guard6;
+
+
+
+    // ------- //
     //  Global //
     // ------- //
 
@@ -126,6 +156,13 @@ public class PlayerController : MonoBehaviour
     public bool hasLevel2_key1 = false;
     public bool hasLevel2_key2 = false;
 
+    public bool hasLevel3_key1 = false;
+    public bool hasLevel3_key2 = false;
+    public bool hasLevel3_key3 = false;
+    public bool hasLevel3_key4 = false;
+    public bool hasLevel3_key5 = false;
+    public bool hasLevel3_key6 = false;
+
 	//Take-over mechanic
 	float takeoverTimer;
 	public GameObject controlObject;
@@ -153,7 +190,8 @@ public class PlayerController : MonoBehaviour
 
         guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3,
                                     levelNew_guard1, levelNew_guard2,
-                                    level2_guard1, level2_guard2, level2_guard3 };
+                                    level2_guard1, level2_guard2, level2_guard3, 
+                                    level3_guard1, level3_guard2, level3_guard3, level3_guard4, level3_guard5, level3_guard6 };
 
 		//Take-over mechanic
 		takeoverTimer = 5;
@@ -272,7 +310,7 @@ public class PlayerController : MonoBehaviour
         player.GetComponent<SpriteRenderer>().sprite = playerSprite;
 
         //Move the player to the guard
-        player.transform.position = controlObject.transform.position;
+        player.transform.position = new Vector3(controlObject.transform.position.x, controlObject.transform.position.y,-7);
 
         //Set control object
         controlObject = player;
@@ -586,6 +624,113 @@ public class PlayerController : MonoBehaviour
                     return;
                 }
             }
+
+            ///////////////////////
+            ////////Level 3///////
+            ///////////////////////
+            
+            //Open level3_door1
+		    if (level3_door1Object)
+		    {
+                if (Vector2.Distance(controlObject.transform.position, level3_door1Object.transform.position) < doorDistance && controlObject == level3_guard1 && hasLevel3_key1)
+                {
+                    Destroy(level3_door1Object);
+		            lc.playSound("keyUnlockDoor");
+		            return;
+		        }
+		    }
+
+            //Open level3_door2
+		    if (level3_door2Object)
+		    {
+		        if (Vector2.Distance(controlObject.transform.position, level3_door2Object.transform.position) < doorDistance && controlObject == level3_guard1 && hasLevel3_key2)
+		        {
+                    Destroy(level3_door2Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+		        }
+		    }
+
+            //Open level3_door3
+		    if (level3_door3Object)
+		    {
+		        if (Vector2.Distance(controlObject.transform.position, level3_door3Object.transform.position) < doorDistance && controlObject == level3_guard4 && hasLevel3_key3)
+		        {
+                    Destroy(level3_door3Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+		        }
+		    }
+
+            //Open level3_door4
+		    if (level3_door4Object)
+		    {
+		        if (Vector2.Distance(controlObject.transform.position, level3_door4Object.transform.position) < doorDistance && controlObject == level3_guard4 && hasLevel3_key3)
+		        {
+                    Destroy(level3_door4Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+		        }
+		    }
+
+            //Operator level3_lever1 (opens lever3_door5)
+		    if (level3_door5Object)
+		    {
+                if (Vector2.Distance(controlObject.transform.position, level3_lever1Object.transform.position) < leverDistance && controlObject != this.gameObject)
+                {
+                    Destroy(level3_door5Object);
+                    level3_lever1Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
+                    return;
+                }
+		    }
+
+            //Operate level3_lever2 (opens level3_door6)
+		    if (level3_door6Object)
+		    {
+                if (Vector2.Distance(controlObject.transform.position, level3_lever2Object.transform.position) < leverDistance && controlObject != this.gameObject)
+                {
+                    Destroy(level3_door6Object);
+                    level3_lever2Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
+                    return;
+                }
+		    }
+
+            //Operate level3_lever3 (opens level3_door7)
+		    if (level3_door7Object)
+		    {
+                if (Vector2.Distance(controlObject.transform.position, level3_lever3Object.transform.position) < leverDistance && controlObject != this.gameObject)
+                {
+                    Destroy(level3_door7Object);
+                    level3_lever3Object.GetComponent<SpriteRenderer>().sprite = leverPulled;
+                    lc.playSound("leverPull");
+                    return;
+                }
+		    }
+
+            //Open level3_door8
+		    if (level3_door8Object)
+		    {
+                if (Vector2.Distance(controlObject.transform.position, level3_door8Object.transform.position) < doorDistance && controlObject == level3_guard5 && hasLevel3_key5)
+                {
+                    Destroy(level3_door8Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+                }
+		    }
+
+            //Open level3_door9
+            if(level3_door9Object)
+		    {
+                if (Vector2.Distance(controlObject.transform.position, level3_door9Object.transform.position) < doorDistance && hasLevel3_key6 && (controlObject == level3_guard5 || controlObject == level3_guard2))
+                {
+                    Destroy(level3_door9Object);
+                    lc.playSound("keyUnlockDoor");
+                    return;
+                }
+		    }
+
             //Next object...
 		}
 	}

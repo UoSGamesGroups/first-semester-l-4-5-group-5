@@ -241,6 +241,61 @@ public class guardController : MonoBehaviour
                 pc.hasLevel2_key2 = true;
                 return;
             }
+
+            //Obtain level3_key1
+            else if (this.gameObject.name == "level3_guard1" && target.name == "level3_key1")
+            {
+                Destroy(target.gameObject);
+                lc.playSound("keyPickup");
+                pc.hasLevel3_key1 = true;
+                return;
+            }
+
+            //Obtain level3_key2
+            else if (this.gameObject.name == "level3_guard1" && target.name == "level3_key2")
+            {
+                Destroy(target.gameObject);
+                lc.playSound("keyPickup");
+                pc.hasLevel3_key2 = true;
+                return;
+            }
+
+            //Obtain level3_key3
+            else if (this.gameObject.name == "level3_guard4" && target.name == "level3_key3")
+            {
+                Destroy(target.gameObject);
+                lc.playSound("keyPickup");
+                pc.hasLevel3_key3 = true;
+                return;
+            }
+
+            //Obtain level3_key4
+            else if (this.gameObject.name == "level3_guard4" && target.name == "level3_key4")
+            {
+                Destroy(target.gameObject);
+                lc.playSound("keyPickup");
+                pc.hasLevel3_key4 = true;
+                return;
+            }
+
+            //Obtain level3_key5
+            else if (this.gameObject.name == "level3_guard5" && target.name == "level3_key5")
+            {
+                Destroy(target.gameObject);
+                lc.playSound("keyPickup");
+                pc.hasLevel3_key5 = true;
+                return;
+            }
+
+            //Obtain level3_key6
+            else if (this.gameObject.name == "level3_guard5" && target.name == "level3_key6")
+            {
+                Destroy(target.gameObject);
+                lc.playSound("keyPickup");
+                pc.hasLevel3_key6 = true;
+                return;
+            }
+
             //Next object...
         }
 
