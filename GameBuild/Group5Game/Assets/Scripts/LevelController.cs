@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LevelController : MonoBehaviour {
 
-    [Header("Waypoint Arrays")]
+    [Header("Level 1 return Arrays")]
     //////////////
     ////level1////
     //////////////
@@ -17,6 +17,7 @@ public class LevelController : MonoBehaviour {
 	//level1Room3
 	public GameObject[] level1topLeftArray;
 
+    [Header("Level New return Arrays")]
     ////////////////
     ////levelnew////
     ////////////////
@@ -28,7 +29,7 @@ public class LevelController : MonoBehaviour {
     public GameObject[] levelnewMainRoomArray;
     public GameObject[] levelnewSouthRoomArray;
 
-
+    [Header("Level 2 return Arrays")]
     //////////////
     ////level2////
     //////////////
@@ -55,6 +56,24 @@ public class LevelController : MonoBehaviour {
 
 	//level2middle
 	public GameObject[] level2middleArray;
+
+    [Header("Level 3 return Arrays")]
+    //////////////
+    ////level3////
+    //////////////
+    public GameObject[] level3NorthLeftArray;
+    public GameObject[] level3NorthArray;
+    public GameObject[] level3RightNorthArray;
+    public GameObject[] level3RightArray;
+    public GameObject[] level3RightSouthArray;
+    public GameObject[] level3LeftNorthArray;
+    public GameObject[] level3LeftArray;
+    public GameObject[] level3LeftSouthArray;
+    public GameObject[] level3LeftSouthEastArray;
+    //Middle arrays
+    public GameObject[] level3MiddleNorthArray;
+    public GameObject[] level3MiddleLeftArray;
+    public GameObject[] level3MiddleRightArray;
 
 
     [Header("Sound gameObjects")]

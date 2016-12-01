@@ -723,7 +723,7 @@ public class PlayerController : MonoBehaviour
             //Open level3_door9
             if(level3_door9Object)
 		    {
-                if (Vector2.Distance(controlObject.transform.position, level3_door9Object.transform.position) < doorDistance && hasLevel3_key6 && (controlObject == level3_guard5 || controlObject == level3_guard2))
+                if (Vector2.Distance(controlObject.transform.position, level3_door9Object.transform.position) < doorDistance && hasLevel3_key6 && (controlObject == level3_guard6 || controlObject == level3_guard2))
                 {
                     Destroy(level3_door9Object);
                     lc.playSound("keyUnlockDoor");

@@ -288,7 +288,7 @@ public class guardController : MonoBehaviour
             }
 
             //Obtain level3_key6
-            else if (this.gameObject.name == "level3_guard5" && target.name == "level3_key6")
+            else if (this.gameObject.name == "level3_guard6" && target.name == "level3_key6")
             {
                 Destroy(target.gameObject);
                 lc.playSound("keyPickup");
@@ -382,7 +382,7 @@ public class guardController : MonoBehaviour
 			    tempPos = 0;
                 break;
 
-            //Level3
+            //LevelNew
             case "levelNew_leftTop":
                 currentRoom = "levelNewLeftTop";
                 tempArray = lc.levelnewLeftTopArray;
@@ -426,6 +426,88 @@ public class guardController : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        //level3
+        if (target.gameObject.name == "level3NorthLeft" && this.gameObject.name == "level3_guard3")
+        {
+            currentRoom = "level3Northleft";
+            tempArray = lc.level3NorthLeftArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3North" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1"))
+        {
+            currentRoom = "level3North";
+            tempArray = lc.level3NorthArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3RightNorth")
+        {
+            currentRoom = "level3RightNorth";
+            tempArray = lc.level3RightNorthArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3Right" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1"))
+        {
+            currentRoom = "level3Right";
+            tempArray = lc.level3MiddleRightArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3RightSouth")
+        {
+            currentRoom = "level3RightSouth";
+            tempArray = lc.level3RightSouthArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3LeftNorth")
+        {
+            currentRoom = "level3LeftNorth";
+            tempArray = lc.level3LeftNorthArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3Left" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1") )
+        {
+            currentRoom = "level3Left";
+            tempArray = lc.level3LeftArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3LeftSouth" && this.gameObject.name == "level3_guard5")
+        {
+            currentRoom = "level3LeftSouth";
+            tempArray = lc.level3LeftSouthArray;
+            tempPos = 0;
+        }
+        else if (target.gameObject.name == "level3LeftSouthEast" && this.gameObject.name == "level3_guard6")
+        {
+            currentRoom = "level3LeftSouthEast";
+            tempArray = lc.level3LeftSouthEastArray;
+            tempPos = 0;
+        }
+
+        //Guards leaving middle
+        if (target.gameObject.name == "level3Middle")
+        {
+            //north
+            if (this.gameObject.name == "level3_guard3")
+            {
+                currentRoom = "level3Middle";
+                tempArray = lc.level3MiddleNorthArray;
+                tempPos = 0;
+            }
+            //left
+            else if (this.gameObject.name == "level3_guard5")
+            {
+                currentRoom = "level3Middle";
+                tempArray = lc.level3MiddleLeftArray;
+                tempPos = 0;
+            }
+            //east
+            else if (this.gameObject.name == "level3_guard4")
+            {
+                currentRoom = "level3Middle";
+                tempArray = lc.level3MiddleRightArray;
+                tempPos = 0;
+            }
         }
     }//End OnTriggerEnter2D
 
@@ -483,6 +565,75 @@ public class guardController : MonoBehaviour
         //            break;
         //    }
         //}
+
+        if (target.gameObject.name == "level3NorthLeft" && this.gameObject.name == "level3_guard3")
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3North" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1"))
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3RightNorth")
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3Right" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1"))
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3RightSouth")
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3LeftNorth")
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3Left" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1"))
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3LeftSouth" && this.gameObject.name == "level3_guard5")
+        {
+            currentRoom = "normal";
+            return;
+        }
+        else if (target.gameObject.name == "level3LeftSouthEast" && this.gameObject.name == "level3_guard6")
+        {
+            currentRoom = "normal";
+            return;
+        }
+
+        //Guards leaving middle
+        if (target.gameObject.name == "level3Middle")
+        {
+            //north
+            if (this.gameObject.name == "level3_guard3")
+            {
+                currentRoom = "normal";
+                return;
+            }
+            //left
+            else if (this.gameObject.name == "level3_guard5")
+            {
+                currentRoom = "normal";
+                return;
+            }
+            //east
+            else if (this.gameObject.name == "level3_guard4")
+            {
+                currentRoom = "normal";
+                return;
+            }
+        }
     }
 
     public void returnToClosestWaypoint()
