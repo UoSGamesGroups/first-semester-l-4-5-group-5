@@ -3,7 +3,7 @@ using System.Collections;
 
 public class guardController : MonoBehaviour
 {
-    
+
     GameObject player;
     PlayerController pc;
 
@@ -17,63 +17,66 @@ public class guardController : MonoBehaviour
 
     public GameObject childKeyObj;
 
-	string currentRoom;
-	GameObject[] tempArray;
-	int tempPos;
+    string currentRoom;
+    GameObject[] tempArray;
+    int tempPos;
 
-	GameObject camera;
-	LevelController lc;
+    GameObject camera;
+    LevelController lc;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         player = GameObject.Find("player");
         pc = player.GetComponent<PlayerController>();
-		rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
 
-		currPos = 0;
-		tempPos = 0;
+        currPos = 0;
+        tempPos = 0;
 
-		currentRoom = "normal";
+        currentRoom = "normal";
 
-		camera = GameObject.FindGameObjectWithTag("MainCamera");
-		lc = camera.GetComponent<LevelController>();
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        camera = GameObject.FindGameObjectWithTag("MainCamera");
+        lc = camera.GetComponent<LevelController>();
+    }
+
+    // Update is called once per frame
+    void Update()
     {
-		if (pc.controlObject != this.gameObject)
-		{
-			if (currentRoom == "normal")
-			{
-				moveToWaypoints();
-			}
-			else
-			{
+        if (pc.controlObject != this.gameObject)
+        {
+            if (currentRoom == "normal")
+            {
+                moveToWaypoints();
+            }
+            else
+            {
                 //Debug.Log(this.gameObject.name + " != normal room");
-				exitRoom();
-			}
-		}
-	}
+                exitRoom();
+            }
+        }
+    }
 
     void moveToWaypoints()
     {
-        Vector2 movePos = new Vector2(wayPointsArray[currPos].transform.position.x - transform.position.x, wayPointsArray[currPos].transform.position.y - transform.position.y);
-        rb.velocity = movePos.normalized * moveSpeed;
+        if (wayPointsArray.Length > 0)
+        {
+            Vector2 movePos = new Vector2(wayPointsArray[currPos].transform.position.x - transform.position.x, wayPointsArray[currPos].transform.position.y - transform.position.y);
+            rb.velocity = movePos.normalized * moveSpeed;
 
-        //Guard facing left or right
-        if (movePos.x < 0)
-            transform.localScale = new Vector2(-pc.level1_guard1_xScale, pc.level1_guard1_yScale);
-        else
-            transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+            //Guard facing left or right
+            if (movePos.x < 0)
+                transform.localScale = new Vector2(-pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+            else
+                transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+        }
     }
 
-	void exitRoom()
-	{
-		//code
-		Vector2 movePos = new Vector2(tempArray[tempPos].transform.position.x - transform.position.x, tempArray[tempPos].transform.position.y - transform.position.y);
-		rb.velocity = movePos.normalized * moveSpeed;
+    void exitRoom()
+    {
+        //code
+        Vector2 movePos = new Vector2(tempArray[tempPos].transform.position.x - transform.position.x, tempArray[tempPos].transform.position.y - transform.position.y);
+        rb.velocity = movePos.normalized * moveSpeed;
 
         for (int i = 0; i < tempArray.Length; i++)
         {
@@ -82,12 +85,12 @@ public class guardController : MonoBehaviour
         //Debug.Log("tempPos:" + tempPos);
         //Debug.Log("Guard: " + this.gameObject.name + " Walking to: " + tempArray[tempPos].gameObject.name);
 
-		//Guard facing left or right
-		if (movePos.x < 0)
-			transform.localScale = new Vector2(-pc.level1_guard1_xScale, pc.level1_guard1_yScale);
-		else
-			transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
-	}
+        //Guard facing left or right
+        if (movePos.x < 0)
+            transform.localScale = new Vector2(-pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+        else
+            transform.localScale = new Vector2(pc.level1_guard1_xScale, pc.level1_guard1_yScale);
+    }
 
     public void activateChildObject(bool foo)
     {
@@ -166,22 +169,22 @@ public class guardController : MonoBehaviour
         }
 
         //////////////////
-		//Obtaining keys//
+        //Obtaining keys//
         //////////////////
-		if (pc.controlObject == this.gameObject)
-		{
+        if (pc.controlObject == this.gameObject)
+        {
 
             ////level1////
 
             //Obtain level1_key1
             if (this.gameObject.name == "level1_guard1" && target.name == "level1_key1")
-			{
-				Destroy (target.gameObject);
+            {
+                Destroy(target.gameObject);
                 //Debug.Log("level1_guard1 collected level1_key1");
                 lc.playSound("keyPickup");
-				pc.hasLevel1_key1 = true;
-				return;
-			}
+                pc.hasLevel1_key1 = true;
+                return;
+            }
 
             //Obtain level1_key2
             else if (this.gameObject.name == "level1_guard2" && target.name == "level1_key2")
@@ -301,85 +304,85 @@ public class guardController : MonoBehaviour
 
 
         /////////////////////
-		//WALKING INTO ROOM//
+        //WALKING INTO ROOM//
         /////////////////////
-		//level1
-		if (target.gameObject.name == "bottomRoomCollider" && this.gameObject.name != "level1_guard1")
-		{
+        //level1
+        if (target.gameObject.name == "bottomRoomCollider" && this.gameObject.name != "level1_guard1")
+        {
             Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
-			currentRoom = "level1bottomRoom";
-			tempArray = lc.level1bottomArray;
-			tempPos = 0;
-			return;
-		}
-		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard1")
-		{
+            currentRoom = "level1bottomRoom";
+            tempArray = lc.level1bottomArray;
+            tempPos = 0;
+            return;
+        }
+        if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard1")
+        {
             Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1middleRoom";
             tempArray = lc.level1middleArrayDown;
-			tempPos = 0;
-			return;
-		}
-		if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard3")
-		{
+            tempPos = 0;
+            return;
+        }
+        if (target.gameObject.name == "secondRoomCollider" && this.gameObject.name == "level1_guard3")
+        {
             Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1middleRoom";
             tempArray = lc.level1middleArrayUp;
-			tempPos = 0;
-			return;
-		}
-		if (target.gameObject.name == "thirdRoomCollider" && this.gameObject.name != "level1_guard3")
-		{
+            tempPos = 0;
+            return;
+        }
+        if (target.gameObject.name == "thirdRoomCollider" && this.gameObject.name != "level1_guard3")
+        {
             Debug.Log("Guard: " + this.gameObject.name + " Walked into: " + target.gameObject.name);
             currentRoom = "level1topRoom";
             tempArray = lc.level1topLeftArray;
-			tempPos = 0;
-			return;
-		}
+            tempPos = 0;
+            return;
+        }
 
 
-		switch (target.gameObject.name)
-		{
-		    //level2
-		    case "level2bottomLeft":
+        switch (target.gameObject.name)
+        {
+            //level2
+            case "level2bottomLeft":
                 currentRoom = "level2bottomLeft";
                 tempArray = lc.level2bottomLeftArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2bottomRight":
-			    currentRoom = "level2bottomRight";
+            case "level2bottomRight":
+                currentRoom = "level2bottomRight";
                 tempArray = lc.level2bottomRightArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2right":
-			    currentRoom = "level2right";
+            case "level2right":
+                currentRoom = "level2right";
                 tempArray = lc.level2rightArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2topRight":
-			    currentRoom = "level2topRight";
+            case "level2topRight":
+                currentRoom = "level2topRight";
                 tempArray = lc.level2topRightArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2top":
-			    currentRoom = "level2top";
+            case "level2top":
+                currentRoom = "level2top";
                 tempArray = lc.level2topArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2topLeft":
-			    currentRoom = "level2topLeft";
+            case "level2topLeft":
+                currentRoom = "level2topLeft";
                 tempArray = lc.level2topLeftArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2left":
-			    currentRoom = "level2left";
+            case "level2left":
+                currentRoom = "level2left";
                 tempArray = lc.level2leftArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
-		    case "level2middle":
-			    currentRoom = "level2middle";
+            case "level2middle":
+                currentRoom = "level2middle";
                 tempArray = lc.level2middleArray;
-			    tempPos = 0;
+                tempPos = 0;
                 break;
 
             //LevelNew
@@ -465,7 +468,7 @@ public class guardController : MonoBehaviour
             tempArray = lc.level3LeftNorthArray;
             tempPos = 0;
         }
-        else if (target.gameObject.name == "level3Left" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1") )
+        else if (target.gameObject.name == "level3Left" && (this.gameObject.name == "level3_guard2" || this.gameObject.name == "level3_guard1"))
         {
             currentRoom = "level3Left";
             tempArray = lc.level3LeftArray;
@@ -513,58 +516,6 @@ public class guardController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D target)
     {
-        //if (pc.controlObject == this.gameObject)
-        //{
-        //    if (target.gameObject.name == "bottomRoomCollider")
-        //    {
-        //        currentRoom = "normal";
-        //        return;
-        //    }
-        //    if (target.gameObject.name == "secondRoomCollider")
-        //    {
-        //        currentRoom = "normal";
-        //        return;
-        //    }
-        //    if (target.gameObject.name == "secondRoomCollider")
-        //    {
-        //        currentRoom = "normal";
-        //        return;
-        //    }
-        //    if (target.gameObject.name == "thirdRoomCollider")
-        //    {
-        //        currentRoom = "normal";
-        //        return;
-        //    }
-
-        //    switch (target.gameObject.name)
-        //    {
-        //        //level2
-        //        case "level2bottomLeft":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2bottomRight":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2right":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2topRight":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2top":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2topLeft":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2left":
-        //            currentRoom = "normal";
-        //            break;
-        //        case "level2middle":
-        //            currentRoom = "normal";
-        //            break;
-        //    }
-        //}
 
         if (target.gameObject.name == "level3NorthLeft" && this.gameObject.name == "level3_guard3")
         {
@@ -653,7 +604,7 @@ public class guardController : MonoBehaviour
                 shortestDist = tempDist;
                 currPos = i;
             }
-                
+
             //Debug.Log("Loop " + i + "// Shortest dist : " + shortestDist);
         }
 
@@ -664,7 +615,7 @@ public class guardController : MonoBehaviour
     {
         return currentRoom;
     }
-    
+
     public void setTempPos(int a)
     {
         tempPos = a;

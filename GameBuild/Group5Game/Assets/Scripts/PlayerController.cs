@@ -99,7 +99,15 @@ public class PlayerController : MonoBehaviour
     public GameObject level3_guard5;
     public GameObject level3_guard6;
 
+    // -------- //
+    // Boss lvl //
+    // -------- //
 
+    [Header("Boss guards")]
+    public GameObject boss_guard1;
+    public GameObject boss_guard2;
+    public GameObject boss_guard3;
+    public GameObject boss_guard4;
 
     // ------- //
     //  Global //
@@ -191,7 +199,8 @@ public class PlayerController : MonoBehaviour
         guards = new GameObject[] { level1_guard1, level1_guard2, level1_guard3,
                                     levelNew_guard1, levelNew_guard2,
                                     level2_guard1, level2_guard2, level2_guard3, 
-                                    level3_guard1, level3_guard2, level3_guard3, level3_guard4, level3_guard5, level3_guard6 };
+                                    level3_guard1, level3_guard2, level3_guard3, level3_guard4, level3_guard5, level3_guard6,
+                                    boss_guard1, boss_guard2, boss_guard3, boss_guard4 };
 
 		//Take-over mechanic
 		takeoverTimer = 5;
@@ -267,15 +276,30 @@ public class PlayerController : MonoBehaviour
             guardController tempgc = level1_guard1.GetComponent<guardController>();
             tempgc.activateChildObject(false);
         }
-
-        //Quickly reference the obj script
-        guardController gc = obj.GetComponent<guardController>();
-
-        //If taking over guard, start coroutine
-        if (obj != this.gameObject)
+        
+        if (controlObject.tag != "bossGuard")
         {
-            takeoverTimer = gc.takeOverTime;
-            lastRoutine = StartCoroutine(controlTimer(gc.takeOverTime));
+            //Quickly reference the obj script
+            guardController gc = obj.GetComponent<guardController>();
+
+            //If taking over guard, start coroutine
+            if (obj != this.gameObject)
+            {
+                takeoverTimer = gc.takeOverTime;
+                lastRoutine = StartCoroutine(controlTimer(gc.takeOverTime));
+            }
+        }
+        
+        else if (controlObject.tag == "bossGuard")
+        {
+            bossGuardControllers bgc = obj.GetComponent<bossGuardControllers>();
+
+            //If taking over guard, start coroutine
+            if (obj != this.gameObject)
+            {
+                takeoverTimer = bgc.takeOverTime;
+                lastRoutine = StartCoroutine(controlTimer(bgc.takeOverTime));
+            }
         }
 
         lc.playSound("enterGuard");
@@ -287,22 +311,30 @@ public class PlayerController : MonoBehaviour
         GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         controlObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 
-        //Call guard method
-        controlObject.GetComponent<guardController>().returnToClosestWaypoint();
-
-        //If the guard isn't normally patrolling (So they are in a room)
-        if (controlObject.GetComponent<guardController>().getCurrentRoom() != "normal")
+        if (controlObject.tag != "bossGuard")
         {
-            //Set the temPos of the guard to 0.
-            controlObject.GetComponent<guardController>().setTempPos(0);
+            //Call guard method
+            controlObject.GetComponent<guardController>().returnToClosestWaypoint();
+
+            //If the guard isn't normally patrolling (So they are in a room)
+            if (controlObject.GetComponent<guardController>().getCurrentRoom() != "normal")
+            {
+                //Set the temPos of the guard to 0.
+                controlObject.GetComponent<guardController>().setTempPos(0);
+            }
+
+            //If level1_guard1
+            if (controlObject == level1_guard1)
+            {
+                //Remove the guide from the guard1
+                guardController tempgc = level1_guard1.GetComponent<guardController>();
+                tempgc.activateChildObject(false);
+            }
         }
 
-        //If level1_guard1
-        if(controlObject == level1_guard1)
+        else if (controlObject.tag == "bossGuard")
         {
-            //Remove the guide from the guard1
-            guardController tempgc = level1_guard1.GetComponent<guardController>();
-            tempgc.activateChildObject(false);
+            controlObject.GetComponent<bossGuardControllers>().currentState = 1;
         }
         
 
@@ -799,6 +831,12 @@ public class PlayerController : MonoBehaviour
             cc.updateInventory();
             return;
         }
+        else if (target.gameObject.name == "exitLevel3")
+        {
+            this.gameObject.transform.position = new Vector3(22, 184, this.gameObject.transform.position.z);
+            return;
+        }
+
     }
 
     public int getCharges()
